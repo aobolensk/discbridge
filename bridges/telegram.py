@@ -1,13 +1,12 @@
 import datetime
-from email import message
 import time
 
 from config import Config
 from discord_webhook import DiscordWebhook
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
 from bridges.abc import Listener
+from telegram import Update
+from telegram.ext import CallbackContext, Filters, MessageHandler, Updater
 
 
 class TelegramListener(Listener):
@@ -32,4 +31,3 @@ class TelegramListener(Listener):
         updater.start_polling()
         while True:
             time.sleep(100)
-
