@@ -29,7 +29,7 @@ class TelegramListener(Listener):
         return output_file
 
     def _on_message(self, update: Update, context: CallbackContext) -> None:
-        if update.message.chat.id not in self._config.telegram.chat_ids:
+        if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             print(f"{datetime.datetime.now()}: filtered id: {update.message.chat.id}")
             return
         text = f"{update.message.from_user.username}: {update.message.text}"
@@ -40,7 +40,7 @@ class TelegramListener(Listener):
         print(f"{datetime.datetime.now()}: {text}")
 
     def _on_sticker(self, update: Update, context: CallbackContext) -> None:
-        if update.message.chat.id not in self._config.telegram.chat_ids:
+        if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         gif_file = tmp_dir() + "/file.gif"
         tgs_file = self._download_file(update.message.sticker.file_id)
@@ -53,7 +53,7 @@ class TelegramListener(Listener):
         webhook.execute()
 
     def _on_voice(self, update: Update, context: CallbackContext) -> None:
-        if update.message.chat.id not in self._config.telegram.chat_ids:
+        if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.voice.file_id, ext="ogg")
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
@@ -64,7 +64,7 @@ class TelegramListener(Listener):
         webhook.execute()
 
     def _on_videonote(self, update: Update, context: CallbackContext) -> None:
-        if update.message.chat.id not in self._config.telegram.chat_ids:
+        if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.video_note.file_id)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
@@ -75,7 +75,7 @@ class TelegramListener(Listener):
         webhook.execute()
 
     def _on_photo(self, update: Update, context: CallbackContext) -> None:
-        if update.message.chat.id not in self._config.telegram.chat_ids:
+        if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.photo.file_id)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
@@ -86,7 +86,7 @@ class TelegramListener(Listener):
         webhook.execute()
 
     def _on_animation(self, update: Update, context: CallbackContext) -> None:
-        if update.message.chat.id not in self._config.telegram.chat_ids:
+        if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.animation.file_id)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"

@@ -10,6 +10,7 @@ class DiscordConfig:
 @dataclass
 class TelegramConfig:
     token: str
+    chat_filter: bool
     chat_ids: List[int]
 
 

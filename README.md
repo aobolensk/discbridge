@@ -14,6 +14,7 @@ Config:
     },
     "telegram": {
         "token": "",
+        "chat_filter": true,
         "chat_ids": []
     }
 }
