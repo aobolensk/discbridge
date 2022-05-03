@@ -1,4 +1,5 @@
 import datetime
+import threading
 import time
 import requests
 import shutil
@@ -42,7 +43,12 @@ class TelegramListener(Listener):
     def _on_sticker(self, update: Update, context: CallbackContext) -> None:
         if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
-        gif_file = tmp_dir() + "/file.gif"
+        t = threading.Thread(target=self._sticker_process_async, args=(update, context))
+        t.setDaemon(True)
+        t.start()
+
+    def _sticker_process_async(self, update: Update, context: CallbackContext):
+        gif_file = tmp_dir() + '/' + uuid.uuid4().hex + ".gif"
         tgs_file = self._download_file(update.message.sticker.file_id)
         subprocess.call(f"lottie_convert.py {tgs_file} {gif_file}", shell=True)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
