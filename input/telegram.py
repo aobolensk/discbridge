@@ -32,7 +32,8 @@ class TelegramListener(Listener):
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             print(f"{datetime.datetime.now()}: filtered id: {update.message.chat.id}")
             return
-        text = f"{update.message.from_user.username}: {update.message.text}"
+        text = (f"[Telegram] ({update.message.date})\n"
+            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text}")
         self._core.send_message(text)
 
     def _on_sticker(self, update: Update, context: CallbackContext) -> None:
@@ -46,35 +47,40 @@ class TelegramListener(Listener):
         gif_file = tmp_dir() + '/' + uuid.uuid4().hex + ".gif"
         tgs_file = self._download_file(update.message.sticker.file_id)
         subprocess.call(f"lottie_convert.py {tgs_file} {gif_file}", shell=True)
-        text = f"{update.message.from_user.username}: {update.message.text or ''}"
+        text = (f"[Telegram] ({update.message.date})\n"
+            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
         self._core.send_message(text, [gif_file])
 
     def _on_voice(self, update: Update, context: CallbackContext) -> None:
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             return
         file = self._download_file(update.message.voice.file_id, ext="ogg")
-        text = f"{update.message.from_user.username}: {update.message.text or ''}"
+        text = (f"[Telegram] ({update.message.date})\n"
+            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
         self._core.send_message(text, [file])
 
     def _on_videonote(self, update: Update, context: CallbackContext) -> None:
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             return
         file = self._download_file(update.message.video_note.file_id)
-        text = f"{update.message.from_user.username}: {update.message.text or ''}"
+        text = (f"[Telegram] ({update.message.date})\n"
+            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
         self._core.send_message(text, [file])
 
     def _on_photo(self, update: Update, context: CallbackContext) -> None:
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             return
         file = self._download_file(update.message.photo.file_id)
-        text = f"{update.message.from_user.username}: {update.message.text or ''}"
+        text = (f"[Telegram] ({update.message.date})\n"
+            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
         self._core.send_message(text, [file])
 
     def _on_animation(self, update: Update, context: CallbackContext) -> None:
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             return
         file = self._download_file(update.message.animation.file_id)
-        text = f"{update.message.from_user.username}: {update.message.text or ''}"
+        text = (f"[Telegram] ({update.message.date})\n"
+            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
         self._core.send_message(text, [file])
 
     def start(self, core, config: Config):
