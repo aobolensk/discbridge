@@ -6,6 +6,7 @@ from typing import List
 from config import Config
 from input.telegram import TelegramListener
 from output.discord import DiscordHandler
+from output.telegram import TelegramHandler
 from utils import tmp_dir
 
 
@@ -28,14 +29,21 @@ class Core:
         print(self._config.__dict__)
 
     def _init_listeners(self) -> None:
-        self._listeners.append(TelegramListener())
+        if "telegram" in self._config.input.keys():
+            print("Input: Added Telegram")
+            self._listeners.append(TelegramListener())
 
     def _run_listeners(self) -> None:
         for listener in self._listeners:
             listener.run(self, self._config)
 
     def _init_handlers(self) -> None:
-        self._handlers.append(DiscordHandler())
+        if "discord" in self._config.output.keys():
+            print("Output: Added Discord")
+            self._handlers.append(DiscordHandler())
+        if "telegram" in self._config.output.keys():
+            print("Output: Added Telegram")
+            self._handlers.append(TelegramHandler())
         for handler in self._handlers:
             handler.init(self, self._config)
 
