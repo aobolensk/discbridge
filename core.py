@@ -25,7 +25,7 @@ class Core:
 
     def _read_config(self) -> None:
         self._config = Config(json.load(open("config.json")))
-        print(self._config)
+        print(self._config.__dict__)
 
     def _init_listeners(self) -> None:
         self._listeners.append(TelegramListener())

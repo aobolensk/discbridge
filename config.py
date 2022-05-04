@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
+from utils import dotdict
+
 
 @dataclass
 class DiscordOutputConfig:
@@ -14,11 +16,13 @@ class TelegramInputConfig:
     chat_ids: List[int]
 
 
-@dataclass
 class Config:
-    discord: DiscordOutputConfig
-    telegram: TelegramInputConfig
-
     def __init__(self, json) -> None:
-        self.discord = DiscordOutputConfig(**json["output"]["discord"])
-        self.telegram = TelegramInputConfig(**json["input"]["telegram"])
+        # Input
+        self.input = dotdict()
+        if "telegram" in json["input"].keys():
+            self.input.telegram = TelegramInputConfig(**json["input"]["telegram"])
+        # Output
+        self.output = dotdict()
+        if "discord" in json["output"].keys():
+            self.output.discord = DiscordOutputConfig(**json["output"]["discord"])

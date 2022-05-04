@@ -14,7 +14,7 @@ class DiscordHandler(Handler):
 
     def send_message(self, text: str, files: List[str] = []):
         webhook = DiscordWebhook(
-            url=self._config.discord.webhook_link, rate_limit_retry=True,
+            url=self._config.output.discord.webhook_link, rate_limit_retry=True,
             content=text)
         for file in files:
             webhook.add_file(file=open(file, "rb").read(), filename=file)
