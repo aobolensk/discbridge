@@ -3,12 +3,12 @@ from typing import List
 
 
 @dataclass
-class DiscordConfig:
+class DiscordOutputConfig:
     webhook_link: str
 
 
 @dataclass
-class TelegramConfig:
+class TelegramInputConfig:
     token: str
     chat_filter: bool
     chat_ids: List[int]
@@ -16,9 +16,9 @@ class TelegramConfig:
 
 @dataclass
 class Config:
-    discord: DiscordConfig
-    telegram: TelegramConfig
+    discord: DiscordOutputConfig
+    telegram: TelegramInputConfig
 
     def __init__(self, json) -> None:
-        self.discord = DiscordConfig(**json["discord"])
-        self.telegram = TelegramConfig(**json["telegram"])
+        self.discord = DiscordOutputConfig(**json["output"]["discord"])
+        self.telegram = TelegramInputConfig(**json["input"]["telegram"])

@@ -9,13 +9,17 @@ $ python3 main.py
 Config:
 ```json
 {
-    "discord": {
-        "webhook_link": ""
+    "input": {
+        "telegram": {
+            "token": "",
+            "chat_filter": true,
+            "chat_ids": []
+        }
     },
-    "telegram": {
-        "token": "",
-        "chat_filter": true,
-        "chat_ids": []
+    "output": {
+        "discord": {
+            "webhook_link": ""
+        }
     }
 }
 ```

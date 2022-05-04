@@ -10,7 +10,7 @@ from config import Config
 from discord_webhook import DiscordWebhook
 from utils import tmp_dir
 
-from bridges.abc import Listener
+from input.abc import Listener
 from telegram import Update
 from telegram.ext import CallbackContext, Filters, MessageHandler, Updater
 
@@ -34,11 +34,7 @@ class TelegramListener(Listener):
             print(f"{datetime.datetime.now()}: filtered id: {update.message.chat.id}")
             return
         text = f"{update.message.from_user.username}: {update.message.text}"
-        webhook = DiscordWebhook(
-            url=self._config.discord.webhook_link, rate_limit_retry=True,
-            content=text)
-        webhook.execute()
-        print(f"{datetime.datetime.now()}: {text}")
+        self._core.send_message(text)
 
     def _on_sticker(self, update: Update, context: CallbackContext) -> None:
         if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
@@ -52,58 +48,39 @@ class TelegramListener(Listener):
         tgs_file = self._download_file(update.message.sticker.file_id)
         subprocess.call(f"lottie_convert.py {tgs_file} {gif_file}", shell=True)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
-        webhook = DiscordWebhook(
-            url=self._config.discord.webhook_link, rate_limit_retry=True,
-            content=text)
-        webhook.add_file(file=open(gif_file, "rb").read(), filename=gif_file)
-        webhook.execute()
+        self._core.send_message(text, [gif_file])
 
     def _on_voice(self, update: Update, context: CallbackContext) -> None:
         if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.voice.file_id, ext="ogg")
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
-        webhook = DiscordWebhook(
-            url=self._config.discord.webhook_link, rate_limit_retry=True,
-            content=text)
-        webhook.add_file(file=open(file, "rb").read(), filename=file)
-        webhook.execute()
+        self._core.send_message(text, [file])
 
     def _on_videonote(self, update: Update, context: CallbackContext) -> None:
         if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.video_note.file_id)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
-        webhook = DiscordWebhook(
-            url=self._config.discord.webhook_link, rate_limit_retry=True,
-            content=text)
-        webhook.add_file(file=open(file, "rb").read(), filename=file)
-        webhook.execute()
+        self._core.send_message(text, [file])
 
     def _on_photo(self, update: Update, context: CallbackContext) -> None:
         if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.photo.file_id)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
-        webhook = DiscordWebhook(
-            url=self._config.discord.webhook_link, rate_limit_retry=True,
-            content=text)
-        webhook.add_file(file=open(file, "rb").read(), filename=file)
-        webhook.execute()
+        self._core.send_message(text, [file])
 
     def _on_animation(self, update: Update, context: CallbackContext) -> None:
         if self._config.telegram.chat_filter and update.message.chat.id not in self._config.telegram.chat_ids:
             return
         file = self._download_file(update.message.animation.file_id)
         text = f"{update.message.from_user.username}: {update.message.text or ''}"
-        webhook = DiscordWebhook(
-            url=self._config.discord.webhook_link, rate_limit_retry=True,
-            content=text)
-        webhook.add_file(file=open(file, "rb").read(), filename=file)
-        webhook.execute()
+        self._core.send_message(text, [file])
 
-    def start(self, config: Config):
+    def start(self, core, config: Config):
         print("start")
+        self._core = core
         self._config = config
         updater = Updater(config.telegram.token)
         dispatcher = updater.dispatcher
