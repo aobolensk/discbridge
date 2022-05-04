@@ -2,6 +2,7 @@ import json
 import os
 import time
 from typing import List
+
 from config import Config
 from input.telegram import TelegramListener
 from output.discord import DiscordHandler
