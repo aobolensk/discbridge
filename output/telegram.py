@@ -13,4 +13,9 @@ class TelegramHandler(Handler):
         self._bot = Bot(self._config.output.telegram.token)
 
     def send_message(self, text: str, files: List[str] = []):
-        self._bot.send_message(self._config.output.telegram.chat_id, text)
+        if files:
+            for file in files:
+                self._bot.send_document(
+                    self._config.output.telegram.chat_id, open(file, 'rb'), caption=text)
+        else:
+            self._bot.send_message(self._config.output.telegram.chat_id, text)
