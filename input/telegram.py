@@ -9,6 +9,7 @@ import requests
 from config import Config
 from utils import tmp_dir
 
+import telegram
 from input.abc import Listener
 from telegram import Update
 from telegram.ext import CallbackContext, Filters, MessageHandler, Updater
@@ -28,12 +29,18 @@ class TelegramListener(Listener):
                 shutil.copyfileobj(r.raw, f)
         return output_file
 
+    def _format_header(self, msg: telegram.Message):
+        return (
+            f"[Telegram] ({msg.date})\n" +
+            (f"Forwarded from: {msg.forward_from.full_name} ({msg.forward_from.username})\n" if msg.forward_from is not None else "") +
+            f"{msg.from_user.full_name} ({msg.from_user.username}): "
+        )
+
     def _on_message(self, update: Update, context: CallbackContext) -> None:
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             print(f"{datetime.datetime.now()}: filtered id: {update.message.chat.id}")
             return
-        text = (f"[Telegram] ({update.message.date})\n"
-            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text}")
+        text = self._format_header(update.message) + update.message.text
         self._core.send_message(text)
 
     def _on_sticker(self, update: Update, context: CallbackContext) -> None:
@@ -47,16 +54,14 @@ class TelegramListener(Listener):
         gif_file = tmp_dir() + '/' + uuid.uuid4().hex + ".gif"
         tgs_file = self._download_file(update.message.sticker.file_id)
         subprocess.call(f"lottie_convert.py {tgs_file} {gif_file}", shell=True)
-        text = (f"[Telegram] ({update.message.date})\n"
-            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
+        text = self._format_header(update.message) + (update.message.text or '')
         self._core.send_message(text, [gif_file])
 
     def _on_attachment(self, update: Update, context: CallbackContext) -> None:
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             return
         file = self._download_file(update.message.effective_attachment.file_id)
-        text = (f"[Telegram] ({update.message.date})\n"
-            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.caption}")
+        text = self._format_header(update.message) + (update.message.caption or '')
         self._core.send_message(text, [file])
 
     def start(self, core, config: Config):
