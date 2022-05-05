@@ -18,6 +18,24 @@ class DiscordHandler(Handler):
             content=text)
         for file in files:
             webhook.add_file(file=open(file, "rb").read(), filename=file)
-        webhook.execute()
-        print(str(datetime.datetime.now()) + ": " + text + ((f"(+ {len(files)} file(s): " +
-            ', '.join(files) + ")") if files else ''))
+        resp = webhook.execute()
+        if resp.status_code in (200, 204):
+            print(str(datetime.datetime.now()) + ": " + text + ((f"(+ {len(files)} file(s): " +
+                ', '.join(files) + ")") if files else ''))
+        elif resp.status_code == 413:
+            text_ext = (text + "\n-----\n" +
+                f"+ {len(files)} file(s) that couldn't be uploaded (too big to upload to Discord)")
+            self._retry_without_files(text_ext)
+        else:
+            print(str(datetime.datetime.now()) + ": " + text + ((f"(+ {len(files)} file(s): " +
+                ', '.join(files) + ")") if files else '') + f". Error: {resp}")
+
+    def _retry_without_files(self, text: str):
+        webhook = DiscordWebhook(
+            url=self._config.output.discord.webhook_link, rate_limit_retry=True,
+            content=text)
+        resp = webhook.execute()
+        if resp.status_code in (200, 204):
+            print(str(datetime.datetime.now()) + ": " + text)
+        else:
+            print("ERROR: " + str(datetime.datetime.now()) + ": " + text)
