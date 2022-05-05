@@ -3,7 +3,7 @@
 How to run:
 ```console
 $ python3 -m pip install -r requirements.txt
-$ python3 main.py
+$ python3 discbridge.py
 ```
 
 Config:
@@ -19,6 +19,10 @@ Config:
     "output": {
         "discord": {
             "webhook_link": ""
+        },
+        "telegram": {
+            "token": "",
+            "chat_id": 0
         }
     }
 }
