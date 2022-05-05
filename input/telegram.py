@@ -51,36 +51,12 @@ class TelegramListener(Listener):
             f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
         self._core.send_message(text, [gif_file])
 
-    def _on_voice(self, update: Update, context: CallbackContext) -> None:
+    def _on_attachment(self, update: Update, context: CallbackContext) -> None:
         if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
             return
-        file = self._download_file(update.message.voice.file_id, ext="ogg")
+        file = self._download_file(update.message.effective_attachment.file_id)
         text = (f"[Telegram] ({update.message.date})\n"
-            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
-        self._core.send_message(text, [file])
-
-    def _on_videonote(self, update: Update, context: CallbackContext) -> None:
-        if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
-            return
-        file = self._download_file(update.message.video_note.file_id)
-        text = (f"[Telegram] ({update.message.date})\n"
-            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
-        self._core.send_message(text, [file])
-
-    def _on_photo(self, update: Update, context: CallbackContext) -> None:
-        if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
-            return
-        file = self._download_file(update.message.photo.file_id)
-        text = (f"[Telegram] ({update.message.date})\n"
-            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
-        self._core.send_message(text, [file])
-
-    def _on_animation(self, update: Update, context: CallbackContext) -> None:
-        if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
-            return
-        file = self._download_file(update.message.animation.file_id)
-        text = (f"[Telegram] ({update.message.date})\n"
-            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.text or ''}")
+            f"{update.message.from_user.full_name} ({update.message.from_user.username}): {update.message.caption}")
         self._core.send_message(text, [file])
 
     def start(self, core, config: Config):
@@ -91,10 +67,12 @@ class TelegramListener(Listener):
         dispatcher = updater.dispatcher
         dispatcher.add_handler(MessageHandler(Filters.text, self._on_message))
         dispatcher.add_handler(MessageHandler(Filters.sticker, self._on_sticker))
-        dispatcher.add_handler(MessageHandler(Filters.voice, self._on_voice))
-        dispatcher.add_handler(MessageHandler(Filters.video_note, self._on_videonote))
-        dispatcher.add_handler(MessageHandler(Filters.photo, self._on_photo))
-        dispatcher.add_handler(MessageHandler(Filters.animation, self._on_animation))
+        dispatcher.add_handler(MessageHandler(Filters.animation, self._on_attachment))
+        dispatcher.add_handler(MessageHandler(Filters.document, self._on_attachment))
+        dispatcher.add_handler(MessageHandler(Filters.photo, self._on_attachment))
+        dispatcher.add_handler(MessageHandler(Filters.video_note, self._on_attachment))
+        dispatcher.add_handler(MessageHandler(Filters.video, self._on_attachment))
+        dispatcher.add_handler(MessageHandler(Filters.voice, self._on_attachment))
 
         updater.start_polling()
         while True:
