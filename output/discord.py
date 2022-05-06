@@ -23,8 +23,8 @@ class DiscordHandler(Handler):
             print(str(datetime.datetime.now()) + ": " + text + ((f"(+ {len(files)} file(s): " +
                 ', '.join(files) + ")") if files else ''))
         elif resp.status_code == 413:
-            text_ext = (text + "\n-----\n" +
-                f"+ {len(files)} file(s) that couldn't be uploaded (too big to upload to Discord)")
+            text_ext = (text + "\n" +
+                f"`+ {len(files)} file(s) that couldn't be uploaded (too big to upload to Discord)`")
             self._retry_without_files(text_ext)
         else:
             print(str(datetime.datetime.now()) + ": " + text + ((f"(+ {len(files)} file(s): " +
