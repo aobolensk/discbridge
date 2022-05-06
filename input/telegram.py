@@ -31,7 +31,7 @@ class TelegramListener(Listener):
 
     def _format_header(self, msg: telegram.Message):
         return (
-            f"[Telegram] ({msg.date})\n" +
+            f"[Telegram] ({msg.date.astimezone()})\n" +
             (f"Forwarded from: {msg.forward_from.full_name} ({msg.forward_from.username})\n" if msg.forward_from is not None else "") +
             f"{msg.from_user.full_name} ({msg.from_user.username}): "
         )
