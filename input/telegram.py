@@ -29,11 +29,22 @@ class TelegramListener(Listener):
                 shutil.copyfileobj(r.raw, f)
         return output_file
 
+    def _format_backend_header(self, msg: telegram.Message):
+        text = "[Telegram] "
+        if msg.chat.title:
+            text += msg.chat.title + " "
+        if msg.chat.full_name:
+            text += msg.chat.full_name + " "
+        text += f"({msg.date.astimezone()})\n"
+        return text
+
     def _format_header(self, msg: telegram.Message):
         return (
-            f"[Telegram] ({msg.date.astimezone()})\n" +
+            self._format_backend_header(msg) +
             (f"Forwarded from: {msg.forward_from.full_name} ({msg.forward_from.username})\n" if msg.forward_from is not None else "") +
-            f"{msg.from_user.full_name} ({msg.from_user.username}): "
+            msg.from_user.full_name +
+            ((" (" + msg.from_user.username + ")") if msg.from_user.username else "") +
+            ": "
         )
 
     def _on_message(self, update: Update, context: CallbackContext) -> None:
@@ -64,6 +75,49 @@ class TelegramListener(Listener):
         text = self._format_header(update.message) + (update.message.caption or '')
         self._core.send_message(text, [file])
 
+    def _on_status_update(self, update: Update, context: CallbackContext) -> None:
+        if self._config.input.telegram.chat_filter and update.message.chat.id not in self._config.input.telegram.chat_ids:
+            return
+        text = self._format_backend_header(update.message) + "Channel message: "
+        msg = update.message
+        if msg.group_chat_created:
+            text += "group_chat_created: " + msg.group_chat_created
+        if msg.supergroup_chat_created:
+            text += "supergroup_chat_created: " + msg.supergroup_chat_created
+        if msg.channel_chat_created:
+            text += "channel_chat_created: " + msg.channel_chat_created
+        if msg.connected_website:
+            text += "connected_website: " + msg.connected_website
+        if msg.delete_chat_photo:
+            text += "delete_chat_photo: " + msg.delete_chat_photo
+        if msg.left_chat_member:
+            text += "left_chat_member: " + msg.left_chat_member
+        if msg.migrate_to_chat_id:
+            text += "migrate_to_chat_id: " + msg.migrate_to_chat_id
+        if msg.migrate_from_chat_id:
+            text += "migrate_from_chat_id: " + msg.migrate_from_chat_id
+        if msg.new_chat_members:
+            text += "new_chat_members: " + msg.new_chat_members
+        if msg.new_chat_photo:
+            text += "new_chat_photo: " + msg.new_chat_photo
+        if msg.new_chat_title:
+            text += "new_chat_title: " + msg.new_chat_title
+        if msg.message_auto_delete_timer_changed:
+            text += "message_auto_delete_timer_changed: " + msg.message_auto_delete_timer_changed
+        if msg.pinned_message:
+            text += "pinned_message: " + msg.pinned_message
+        if msg.proximity_alert_triggered:
+            text += "proximity_alert_triggered: " + msg.proximity_alert_triggered
+        if msg.voice_chat_scheduled:
+            text += "voice_chat_scheduled: " + msg.voice_chat_scheduled
+        if msg.voice_chat_started:
+            text += "voice_chat_started: " + msg.voice_chat_started
+        if msg.voice_chat_ended:
+            text += "voice_chat_ended: " + msg.voice_chat_ended
+        if msg.voice_chat_participants_invited:
+            text += "voice_chat_participants_invited: " + msg.voice_chat_participants_invited
+        self._core.send_message(text)
+
     def start(self, core, config: Config):
         print("start")
         self._core = core
@@ -78,6 +132,7 @@ class TelegramListener(Listener):
         dispatcher.add_handler(MessageHandler(Filters.video_note, self._on_attachment))
         dispatcher.add_handler(MessageHandler(Filters.video, self._on_attachment))
         dispatcher.add_handler(MessageHandler(Filters.voice, self._on_attachment))
+        dispatcher.add_handler(MessageHandler(Filters.status_update, self._on_status_update))
 
         updater.start_polling()
         while True:
