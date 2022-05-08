@@ -2,7 +2,8 @@ import importlib
 import inspect
 import json
 import os
-import time
+import signal
+import sys
 from typing import List
 
 import yaml
@@ -18,14 +19,19 @@ class Core:
         self._listeners = list()
         self._handlers = list()
 
+    def _stop_signal_handler(self, sig, frame):
+        print('Stopped the bridge!')
+        sys.exit(0)
+
     def run(self) -> None:
         self._read_config()
         os.makedirs(tmp_dir(), exist_ok=True)
         self._init_listeners()
         self._init_handlers()
         self._run_listeners()
-        while True:
-            time.sleep(100)
+        signal.signal(signal.SIGINT, self._stop_signal_handler)
+        print("Press Ctrl+C to stop")
+        signal.pause()
 
     def _read_config(self) -> None:
         if os.path.isfile("config.yaml"):
