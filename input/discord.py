@@ -1,7 +1,7 @@
 import asyncio
 
 from config import Config
-from utils import tmp_dir, tmp_random_filename
+from utils import tmp_random_filename
 
 import discord
 from input.abc import Listener
@@ -70,6 +70,7 @@ class _DiscordClient(discord.Client):
                 f.write(await attachment.read())
             files.append(output_file)
         self._core.send_message(text, files)
+
 
 class DiscordListener(Listener):
     def start(self, core, config: Config):

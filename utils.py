@@ -13,6 +13,7 @@ def tmp_random_filename(ext=None):
     else:
         return tmp_dir() + '/' + uuid.uuid4().hex + '.' + ext
 
+
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
     __getattr__ = dict.get
