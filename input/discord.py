@@ -1,6 +1,8 @@
 import asyncio
+import uuid
 
 from config import Config
+from utils import tmp_dir
 
 import discord
 from input.abc import Listener
@@ -62,7 +64,14 @@ class _DiscordClient(discord.Client):
             return
         text = self._format_header(message)
         text += message.content
-        self._core.send_message(text)
+        files = []
+        for attachment in message.attachments:
+            ext = attachment.filename.split('.')[-1]
+            output_file = tmp_dir() + '/' + uuid.uuid4().hex + '.' + ext
+            with open(output_file, 'wb') as f:
+                f.write(await attachment.read())
+            files.append(output_file)
+        self._core.send_message(text, files)
 
 class DiscordListener(Listener):
     def start(self, core, config: Config):
