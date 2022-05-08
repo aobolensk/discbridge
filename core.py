@@ -47,8 +47,9 @@ class Core:
             listeners = [obj[1] for obj in inspect.getmembers(module, inspect.isclass)
                         if issubclass(obj[1], Listener) and obj[1] != Listener]
             for listener in listeners:
-                self._listeners.append(listener())
-                print("Input: Added " + listener.__name__)
+                if listener.get_name(listener) in self._config.input.keys():
+                    self._listeners.append(listener())
+                    print("Input: Added " + listener.__name__)
 
     def _run_listeners(self) -> None:
         for listener in self._listeners:
@@ -61,8 +62,9 @@ class Core:
             handlers = [obj[1] for obj in inspect.getmembers(module, inspect.isclass)
                         if issubclass(obj[1], Handler) and obj[1] != Handler]
             for handler in handlers:
-                self._handlers.append(handler())
-                print("Output: Added " + handler.__name__)
+                if handler.get_name(handler) in self._config.output.keys():
+                    self._handlers.append(handler())
+                    print("Output: Added " + handler.__name__)
         for handler in self._handlers:
             handler.init(self, self._config)
 
