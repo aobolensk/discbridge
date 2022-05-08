@@ -75,7 +75,7 @@ class _DiscordClient(discord.Client):
 
 class DiscordListener(Listener):
     def start(self, core, config: Config):
-        print("DiscordListener start")
+        print("Input: DiscordListener start")
         self._core = core
         self._config = config
         loop = asyncio.new_event_loop()

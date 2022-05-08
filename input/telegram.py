@@ -119,7 +119,7 @@ class TelegramListener(Listener):
         self._core.send_message(text)
 
     def start(self, core, config: Config):
-        print("start")
+        print("Input: TelegramListener start")
         self._core = core
         self._config = config
         updater = Updater(config.input.telegram.token)
