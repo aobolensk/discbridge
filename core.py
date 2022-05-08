@@ -3,6 +3,8 @@ import os
 import time
 from typing import List
 
+import yaml
+
 from config import Config
 from input.discord import DiscordListener
 from input.telegram import TelegramListener
@@ -26,7 +28,10 @@ class Core:
             time.sleep(100)
 
     def _read_config(self) -> None:
-        self._config = Config(json.load(open("config.json")))
+        if os.path.isfile("config.yaml"):
+            self._config = Config(yaml.load(open("config.yaml"), yaml.CLoader))
+        elif os.path.isfile("config.json"):
+            self._config = Config(json.load(open("config.json")))
         print(self._config.__dict__)
 
     def _init_listeners(self) -> None:

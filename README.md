@@ -6,24 +6,21 @@ $ python3 -m pip install -r requirements.txt
 $ python3 discbridge.py
 ```
 
-Config:
-```json
-{
-    "input": {
-        "telegram": {
-            "token": "",
-            "chat_filter": true,
-            "chat_ids": []
-        }
-    },
-    "output": {
-        "discord": {
-            "webhook_link": ""
-        },
-        "telegram": {
-            "token": "",
-            "chat_id": 0
-        }
-    }
-}
+Config (create `config.yaml` file):
+```yaml
+input:
+  telegram:
+    token: <token>
+    chat_filter: false
+    chat_ids: []
+  discord:
+    token: <token>
+    chat_filter: false
+    chat_ids: []
+output:
+  discord:
+    webhook_link: <link>
+  telegram:
+    token: <token>
+    chat_id: 0
 ```

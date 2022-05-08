@@ -4,3 +4,4 @@ lottie==0.6.11
 requests==2.27.1
 cairosvg==2.5.2
 py-cord==1.7.3
+PyYAML==6.0
