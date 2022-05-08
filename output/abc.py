@@ -13,3 +13,6 @@ class Handler(abc.ABC):
 
     def send_message(self, text: str, files: List[str]):
         pass
+
+    def get_name(self) -> str:
+        pass

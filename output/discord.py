@@ -39,3 +39,6 @@ class DiscordHandler(Handler):
             print(str(datetime.datetime.now()) + ": " + text)
         else:
             print("ERROR: " + str(datetime.datetime.now()) + ": " + text)
+
+    def get_name(self) -> str:
+        return "discord"

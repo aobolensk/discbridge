@@ -137,3 +137,6 @@ class TelegramListener(Listener):
         updater.start_polling()
         while True:
             time.sleep(100)
+
+    def get_name(self) -> str:
+        return "telegram"

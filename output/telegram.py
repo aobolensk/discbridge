@@ -19,3 +19,6 @@ class TelegramHandler(Handler):
                     self._config.output.telegram.chat_id, open(file, 'rb'), caption=text)
         else:
             self._bot.send_message(self._config.output.telegram.chat_id, text)
+
+    def get_name(self) -> str:
+        return "telegram"

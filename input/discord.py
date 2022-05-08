@@ -82,3 +82,6 @@ class DiscordListener(Listener):
         asyncio.set_event_loop(loop)
         client = _DiscordClient(core, config)
         client.run(self._config.input.discord.token)
+
+    def get_name(self):
+        return "discord"

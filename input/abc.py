@@ -18,3 +18,6 @@ class Listener(abc.ABC):
 
     def start(self, core, config: Config):
         pass
+
+    def get_name(self) -> str:
+        pass
