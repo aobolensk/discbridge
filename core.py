@@ -45,7 +45,7 @@ class Core:
         for file in filter(lambda x: x.endswith(".py"), os.listdir(listeners_dir)):
             module = importlib.import_module(listeners_dir + "." + os.path.splitext(file)[0])
             listeners = [obj[1] for obj in inspect.getmembers(module, inspect.isclass)
-                        if issubclass(obj[1], Listener) and obj[1] != Listener]
+                         if issubclass(obj[1], Listener) and obj[1] != Listener]
             for listener in listeners:
                 if listener.get_name(listener) in self._config.input.keys():
                     self._listeners.append(listener())
