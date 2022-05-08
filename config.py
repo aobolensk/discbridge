@@ -5,12 +5,14 @@ from utils import dotdict
 
 
 @dataclass
-class DiscordOutputConfig:
-    webhook_link: str
+class TelegramInputConfig:
+    token: str
+    chat_filter: bool
+    chat_ids: List[int]
 
 
 @dataclass
-class TelegramInputConfig:
+class DiscordInputConfig:
     token: str
     chat_filter: bool
     chat_ids: List[int]
@@ -22,12 +24,19 @@ class TelegramOutputConfig:
     chat_id: int
 
 
+@dataclass
+class DiscordOutputConfig:
+    webhook_link: str
+
+
 class Config:
     def __init__(self, json) -> None:
         # Input
         self.input = dotdict()
         if "telegram" in json["input"].keys():
             self.input.telegram = TelegramInputConfig(**json["input"]["telegram"])
+        if "discord" in json["input"].keys():
+            self.input.discord = DiscordInputConfig(**json["input"]["discord"])
         # Output
         self.output = dotdict()
         if "discord" in json["output"].keys():

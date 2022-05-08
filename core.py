@@ -4,6 +4,7 @@ import time
 from typing import List
 
 from config import Config
+from input.discord import DiscordListener
 from input.telegram import TelegramListener
 from output.discord import DiscordHandler
 from output.telegram import TelegramHandler
@@ -32,6 +33,9 @@ class Core:
         if "telegram" in self._config.input.keys():
             print("Input: Added Telegram")
             self._listeners.append(TelegramListener())
+        if "discord" in self._config.input.keys():
+            print("Input: Added Discord")
+            self._listeners.append(DiscordListener())
 
     def _run_listeners(self) -> None:
         for listener in self._listeners:
