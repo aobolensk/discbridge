@@ -1,3 +1,5 @@
+import importlib
+import inspect
 import json
 import os
 import time
@@ -6,10 +8,8 @@ from typing import List
 import yaml
 
 from config import Config
-from input.discord import DiscordListener
-from input.telegram import TelegramListener
-from output.discord import DiscordHandler
-from output.telegram import TelegramHandler
+from input.abc import Listener
+from output.abc import Handler
 from utils import tmp_dir
 
 
@@ -35,24 +35,28 @@ class Core:
         print(self._config.__dict__)
 
     def _init_listeners(self) -> None:
-        if "telegram" in self._config.input.keys():
-            print("Input: Added Telegram")
-            self._listeners.append(TelegramListener())
-        if "discord" in self._config.input.keys():
-            print("Input: Added Discord")
-            self._listeners.append(DiscordListener())
+        listeners_dir = "input"
+        for file in filter(lambda x: x.endswith(".py"), os.listdir(listeners_dir)):
+            module = importlib.import_module(listeners_dir + "." + os.path.splitext(file)[0])
+            listeners = [obj[1] for obj in inspect.getmembers(module, inspect.isclass)
+                        if issubclass(obj[1], Listener) and obj[1] != Listener]
+            for listener in listeners:
+                self._listeners.append(listener())
+                print("Input: Added " + listener.__name__)
 
     def _run_listeners(self) -> None:
         for listener in self._listeners:
             listener.run(self, self._config)
 
     def _init_handlers(self) -> None:
-        if "discord" in self._config.output.keys():
-            print("Output: Added Discord")
-            self._handlers.append(DiscordHandler())
-        if "telegram" in self._config.output.keys():
-            print("Output: Added Telegram")
-            self._handlers.append(TelegramHandler())
+        handlers_dir = "output"
+        for file in filter(lambda x: x.endswith(".py"), os.listdir(handlers_dir)):
+            module = importlib.import_module(handlers_dir + "." + os.path.splitext(file)[0])
+            handlers = [obj[1] for obj in inspect.getmembers(module, inspect.isclass)
+                        if issubclass(obj[1], Handler) and obj[1] != Handler]
+            for handler in handlers:
+                self._handlers.append(handler())
+                print("Output: Added " + handler.__name__)
         for handler in self._handlers:
             handler.init(self, self._config)
 
