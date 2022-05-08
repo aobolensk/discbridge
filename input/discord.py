@@ -1,8 +1,7 @@
 import asyncio
-import uuid
 
 from config import Config
-from utils import tmp_dir
+from utils import tmp_dir, tmp_random_filename
 
 import discord
 from input.abc import Listener
@@ -66,8 +65,7 @@ class _DiscordClient(discord.Client):
         text += message.content
         files = []
         for attachment in message.attachments:
-            ext = attachment.filename.split('.')[-1]
-            output_file = tmp_dir() + '/' + uuid.uuid4().hex + '.' + ext
+            output_file = tmp_random_filename(attachment.filename.split('.')[-1])
             with open(output_file, 'wb') as f:
                 f.write(await attachment.read())
             files.append(output_file)

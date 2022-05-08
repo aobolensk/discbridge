@@ -3,11 +3,10 @@ import shutil
 import subprocess
 import threading
 import time
-import uuid
 
 import requests
 from config import Config
-from utils import tmp_dir
+from utils import tmp_random_filename
 
 import telegram
 from input.abc import Listener
@@ -22,7 +21,7 @@ class TelegramListener(Listener):
         if ext is None:
             ext = target_file_path.split('.')[-1]
         r = requests.get(f"https://api.telegram.org/file/bot{self._config.input.telegram.token}/{target_file_path}", stream=True)
-        output_file = tmp_dir() + '/' + uuid.uuid4().hex + '.' + ext
+        output_file = tmp_random_filename(ext)
         if r.status_code == 200:
             with open(output_file, "wb") as f:
                 r.raw.decode_content = True
@@ -62,7 +61,7 @@ class TelegramListener(Listener):
         t.start()
 
     def _sticker_process_async(self, update: Update, context: CallbackContext):
-        gif_file = tmp_dir() + '/' + uuid.uuid4().hex + ".gif"
+        gif_file = tmp_random_filename("gif")
         tgs_file = self._download_file(update.message.sticker.file_id)
         subprocess.call(f"lottie_convert.py {tgs_file} {gif_file}", shell=True)
         text = self._format_header(update.message) + (update.message.text or '')
