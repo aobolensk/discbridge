@@ -23,4 +23,15 @@ output:
   telegram:
     token: <token>
     chat_id: 0
+  email:
+    email: <sender_email>
+    password: <sender_email_password>
+    smtp_server: <sender_email_smtp_server>
+    to_addrs:
+      - <destination_email_address>
+    cc_addrs:
+      - <destination_email_address>
+    bcc_addrs:
+      - <destination_email_address>
+    subject: <subject>
 ```
