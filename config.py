@@ -29,6 +29,17 @@ class DiscordOutputConfig:
     webhook_link: str
 
 
+@dataclass
+class EmailOutputConfig:
+    email: str
+    password: str
+    smtp_server: str
+    to_addrs: List[str]
+    cc_addrs: List[str]
+    bcc_addrs: List[str]
+    subject: str
+
+
 class Config:
     def __init__(self, json) -> None:
         # Input
@@ -43,3 +54,5 @@ class Config:
             self.output.discord = DiscordOutputConfig(**json["output"]["discord"])
         if "telegram" in json["output"].keys():
             self.output.telegram = TelegramOutputConfig(**json["output"]["telegram"])
+        if "email" in json["output"].keys():
+            self.output.email = EmailOutputConfig(**json["output"]["email"])
