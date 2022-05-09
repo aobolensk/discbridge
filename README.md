@@ -6,7 +6,11 @@ $ python3 -m pip install -r requirements.txt
 $ python3 discbridge.py
 ```
 
-Config (create `config.yaml` file):
+### Config (create `config.yaml` file):
+
+Note: All input and output values are optional.
+If you do not need any backend just omit corresponding part of config.
+
 ```yaml
 input:
   telegram:
