@@ -42,3 +42,6 @@ class EmailHandler(Handler):
 
     def get_name(self) -> str:
         return "email"
+
+    def close(self) -> None:
+        self._server.quit()

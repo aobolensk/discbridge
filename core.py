@@ -20,6 +20,7 @@ class Core:
         self._handlers = list()
 
     def _stop_signal_handler(self, sig, frame):
+        self._close_handlers()
         print('Stopped the bridge!')
         sys.exit(0)
 
@@ -67,6 +68,10 @@ class Core:
                     print("Output: Added " + handler.__name__)
         for handler in self._handlers:
             handler.init(self, self._config)
+
+    def _close_handlers(self) -> None:
+        for handler in self._handlers:
+            handler.close()
 
     def send_message(self, text: str, files: List[str] = []) -> None:
         for handler in self._handlers:

@@ -11,6 +11,9 @@ class Handler(abc.ABC):
     def init(self, core, config: Config) -> None:
         pass
 
+    def close(self) -> None:
+        pass
+
     def send_message(self, text: str, files: List[str]):
         pass
 

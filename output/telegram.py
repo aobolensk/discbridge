@@ -22,3 +22,6 @@ class TelegramHandler(Handler):
 
     def get_name(self) -> str:
         return "telegram"
+
+    def close(self) -> None:
+        pass

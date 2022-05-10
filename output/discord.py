@@ -44,3 +44,6 @@ class DiscordHandler(Handler):
 
     def get_name(self) -> str:
         return "discord"
+
+    def close(self) -> None:
+        pass
