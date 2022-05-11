@@ -1,7 +1,7 @@
-discord-webhook==0.15.0
-python-telegram-bot==13.11
-lottie==0.6.11
-requests==2.27.1
-cairosvg==2.5.2
-py-cord==1.7.3
-PyYAML==6.0
+cairosvg==2.5.2                             # common
+discord-webhook==0.15.0                     # discord output
+lottie==0.6.11                              # telegram input
+py-cord==1.7.3                              # discord input
+python-telegram-bot==13.11                  # telegram input/output
+PyYAML==6.0                                 # common
+requests==2.27.1                            # common
