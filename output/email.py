@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import List
 
-from config import Config
+from config import Config, EmailOutputConfig
 
 from output.abc import Handler
 
@@ -45,3 +45,6 @@ class EmailHandler(Handler):
 
     def close(self) -> None:
         self._server.quit()
+
+    def get_config_type(self) -> type:
+        return EmailOutputConfig

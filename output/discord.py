@@ -1,7 +1,7 @@
 import datetime
 from typing import List
 
-from config import Config
+from config import Config, DiscordOutputConfig
 from discord_webhook import DiscordWebhook
 
 from output.abc import Handler
@@ -47,3 +47,6 @@ class DiscordHandler(Handler):
 
     def close(self) -> None:
         pass
+
+    def get_config_type(self) -> type:
+        return DiscordOutputConfig

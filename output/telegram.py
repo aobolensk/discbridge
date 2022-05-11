@@ -1,6 +1,6 @@
 from typing import List
 
-from config import Config
+from config import Config, TelegramOutputConfig
 
 from output.abc import Handler
 from telegram import Bot
@@ -25,3 +25,6 @@ class TelegramHandler(Handler):
 
     def close(self) -> None:
         pass
+
+    def get_config_type(self) -> type:
+        return TelegramOutputConfig
