@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
+import argparse
+
 from core import Core
 
 
 def main():
-    core = Core()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("config", type=str, nargs="?", help="Path to config file")
+    args = parser.parse_args()
+
+    core = Core(args)
     core.run()
 
 

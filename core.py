@@ -15,9 +15,10 @@ from utils import tmp_dir
 
 
 class Core:
-    def __init__(self) -> None:
+    def __init__(self, args) -> None:
         self._listeners = list()
         self._handlers = list()
+        self._args = args
 
     def _stop_signal_handler(self, sig, frame):
         self._close_handlers()
@@ -35,7 +36,9 @@ class Core:
         signal.pause()
 
     def _read_config(self) -> None:
-        if os.path.isfile("config.yaml"):
+        if self._args.config:
+            self._config = Config(yaml.load(open(self._args.config), yaml.CLoader))
+        elif os.path.isfile("config.yaml"):
             self._config = Config(yaml.load(open("config.yaml"), yaml.CLoader))
         elif os.path.isfile("config.json"):
             self._config = Config(json.load(open("config.json")))
