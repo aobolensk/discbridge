@@ -1,6 +1,6 @@
 import asyncio
 
-from config import Config, DiscordInputConfig
+from config import Config
 from utils import tmp_random_filename
 
 import discord
@@ -84,6 +84,3 @@ class DiscordListener(Listener):
 
     def get_name(self):
         return "discord"
-
-    def get_config_type(self) -> type:
-        return DiscordInputConfig

@@ -5,7 +5,7 @@ import threading
 import time
 
 import requests
-from config import Config, TelegramInputConfig
+from config import Config
 from utils import tmp_random_filename
 
 import telegram
@@ -146,6 +146,3 @@ class TelegramListener(Listener):
 
     def get_name(self) -> str:
         return "telegram"
-
-    def get_config_type(self) -> type:
-        return TelegramInputConfig

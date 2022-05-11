@@ -19,6 +19,3 @@ class Handler(abc.ABC):
 
     def get_name(self) -> str:
         pass
-
-    def get_config_type(self) -> type:
-        pass
