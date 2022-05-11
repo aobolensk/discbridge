@@ -44,15 +44,9 @@ class Config:
     def __init__(self, json) -> None:
         # Input
         self.input = dotdict()
-        if "telegram" in json["input"].keys():
-            self.input.telegram = TelegramInputConfig(**json["input"]["telegram"])
-        if "discord" in json["input"].keys():
-            self.input.discord = DiscordInputConfig(**json["input"]["discord"])
+        for input_name, config in json["input"].items():
+            self.input[input_name] = globals()[f"{input_name.title()}InputConfig"](**(config))
         # Output
         self.output = dotdict()
-        if "discord" in json["output"].keys():
-            self.output.discord = DiscordOutputConfig(**json["output"]["discord"])
-        if "telegram" in json["output"].keys():
-            self.output.telegram = TelegramOutputConfig(**json["output"]["telegram"])
-        if "email" in json["output"].keys():
-            self.output.email = EmailOutputConfig(**json["output"]["email"])
+        for output_name, config in json["output"].items():
+            self.output[output_name] = globals()[f"{output_name.title()}OutputConfig"](**(config))
