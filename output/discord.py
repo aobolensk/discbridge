@@ -3,6 +3,7 @@ from typing import List
 
 from config import Config
 from discord_webhook import DiscordWebhook
+from logger import log
 
 from output.abc import Handler
 
@@ -20,17 +21,13 @@ class DiscordHandler(Handler):
             webhook.add_file(file=open(file, "rb").read(), filename=file)
         resp = webhook.execute()
         if resp.status_code in (200, 204):
-            print(
-                str(datetime.datetime.now()) + ": " + text + (
-                    (f"(+ {len(files)} file(s): " + ', '.join(files) + ")") if files else ''))
+            log.message(self.__class__.__name__, text, files)
         elif resp.status_code == 413:
             text_ext = (
                 text + "\n" + f"`+ {len(files)} file(s) that couldn't be uploaded (too big to upload to Discord)`")
             self._retry_without_files(text_ext)
         else:
-            print(
-                str(datetime.datetime.now()) + ": " + text + (
-                    (f"(+ {len(files)} file(s): " + ', '.join(files) + ")") if files else '') + f". Error: {resp}")
+            log.error(f"[{self.__class__.__name__}] ERROR: {resp} ({text})")
 
     def _retry_without_files(self, text: str):
         webhook = DiscordWebhook(
@@ -38,9 +35,9 @@ class DiscordHandler(Handler):
             content=text)
         resp = webhook.execute()
         if resp.status_code in (200, 204):
-            print(str(datetime.datetime.now()) + ": " + text)
+            log.message(self.__class__.__name__, text)
         else:
-            print("ERROR: " + str(datetime.datetime.now()) + ": " + text)
+            log.error(f"[{self.__class__.__name__}] ERROR: {resp} ({text})")
 
     def get_name(self) -> str:
         return "discord"

@@ -2,6 +2,7 @@ import abc
 import threading
 
 from config import Config
+from logger import log
 
 
 class Listener(abc.ABC):
@@ -14,7 +15,7 @@ class Listener(abc.ABC):
             t.setDaemon(True)
             t.start()
         except Exception as e:
-            print(e)
+            log.error(e)
 
     def start(self, core, config: Config):
         pass

@@ -6,6 +6,7 @@ from email.mime.text import MIMEText
 from typing import List
 
 from config import Config
+from logger import log
 
 from output.abc import Handler
 
@@ -39,6 +40,7 @@ class EmailHandler(Handler):
                 part.add_header("Content-Disposition", f"attachment; filename= {file}")
                 msg.attach(part)
         self._server.send_message(msg, self._config.output.email.email, full_to_addrs_list)
+        log.message(self.__class__.__name__, text, files)
 
     def get_name(self) -> str:
         return "email"

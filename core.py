@@ -10,6 +10,7 @@ import yaml
 
 from config import Config
 from input.abc import Listener
+from logger import log
 from output.abc import Handler
 from utils import tmp_dir
 
@@ -42,7 +43,7 @@ class Core:
             self._config = Config(yaml.load(open("config.yaml"), yaml.CLoader))
         elif os.path.isfile("config.json"):
             self._config = Config(json.load(open("config.json")))
-        print(self._config.__dict__)
+        log.debug(self._config.__dict__)
 
     def _init_listeners(self) -> None:
         listeners_dir = "input"
@@ -53,7 +54,7 @@ class Core:
             for listener in listeners:
                 if listener.get_name(listener) in self._config.input.keys():
                     self._listeners.append(listener())
-                    print("Input: Added " + listener.__name__)
+                    log.info("Input: Added " + listener.__name__)
 
     def _run_listeners(self) -> None:
         for listener in self._listeners:
@@ -68,7 +69,7 @@ class Core:
             for handler in handlers:
                 if handler.get_name(handler) in self._config.output.keys():
                     self._handlers.append(handler())
-                    print("Output: Added " + handler.__name__)
+                    log.info("Output: Added " + handler.__name__)
         for handler in self._handlers:
             handler.init(self, self._config)
 

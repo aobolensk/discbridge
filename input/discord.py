@@ -1,6 +1,7 @@
 import asyncio
 
 from config import Config
+from logger import log
 from utils import tmp_random_filename
 
 import discord
@@ -74,7 +75,7 @@ class _DiscordClient(discord.Client):
 
 class DiscordListener(Listener):
     def start(self, core, config: Config):
-        print("Input: DiscordListener start")
+        log.info("Input: DiscordListener start")
         self._core = core
         self._config = config
         loop = asyncio.new_event_loop()

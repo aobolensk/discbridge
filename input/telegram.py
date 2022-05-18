@@ -1,4 +1,3 @@
-import datetime
 import shutil
 import subprocess
 import threading
@@ -6,6 +5,7 @@ import time
 
 import requests
 from config import Config
+from logger import log
 from utils import tmp_random_filename
 
 import telegram
@@ -52,7 +52,7 @@ class TelegramListener(Listener):
     def _on_message(self, update: Update, context: CallbackContext) -> None:
         if (self._config.input.telegram.chat_filter
                 and update.message.chat.id not in self._config.input.telegram.chat_ids):
-            print(f"{datetime.datetime.now()}: filtered id: {update.message.chat.id}")
+            log.info(f"Telegram: Ignoring message from {update.message.chat.id}")
             return
         text = self._format_header(update.message) + update.message.text
         self._core.send_message(text)
@@ -125,7 +125,7 @@ class TelegramListener(Listener):
         self._core.send_message(text)
 
     def start(self, core, config: Config):
-        print("Input: TelegramListener start")
+        log.info("Input: TelegramListener start")
         self._core = core
         self._config = config
         updater = Updater(config.input.telegram.token)
