@@ -43,6 +43,9 @@ class Core:
             self._config = Config(yaml.load(open("config.yaml"), yaml.CLoader))
         elif os.path.isfile("config.json"):
             self._config = Config(json.load(open("config.json")))
+        else:
+            log.error("No config file found!")
+            sys.exit(1)
         log.debug(self._config.__dict__)
 
     def _init_listeners(self) -> None:
