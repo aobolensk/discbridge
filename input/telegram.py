@@ -140,7 +140,7 @@ class TelegramListener(Listener):
         dispatcher.add_handler(MessageHandler(Filters.voice, self._on_attachment))
         dispatcher.add_handler(MessageHandler(Filters.status_update, self._on_status_update))
 
-        updater.start_polling()
+        updater.start_polling(timeout=600)
         while True:
             time.sleep(100)
 
