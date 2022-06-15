@@ -6,7 +6,7 @@ import time
 import requests
 from config import Config
 from logger import log
-from utils import tmp_random_filename
+from utils import proxy, tmp_random_filename
 
 import telegram
 from input.abc import Listener
@@ -128,7 +128,9 @@ class TelegramListener(Listener):
         log.info("Input: TelegramListener start")
         self._core = core
         self._config = config
-        updater = Updater(config.input.telegram.token)
+        updater = Updater(config.input.telegram.token, request_kwargs={
+            "proxy_url": proxy.http(),
+        })
         dispatcher = updater.dispatcher
         dispatcher.add_handler(MessageHandler(Filters.text, self._on_message))
         dispatcher.add_handler(MessageHandler(Filters.sticker, self._on_sticker))
