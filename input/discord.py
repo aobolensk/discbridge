@@ -2,7 +2,7 @@ import asyncio
 
 from config import Config
 from logger import log
-from utils import tmp_random_filename
+from utils import proxy, tmp_random_filename
 
 import discord
 from input.abc import Listener
@@ -10,7 +10,7 @@ from input.abc import Listener
 
 class _DiscordClient(discord.Client):
     def __init__(self, core, config: Config):
-        super().__init__()
+        super().__init__(proxy=proxy.http())
         self._core = core
         self._config = config
 
