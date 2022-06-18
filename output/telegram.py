@@ -2,16 +2,19 @@ from typing import List
 
 from config import Config
 from logger import log
+from utils import proxy
 
 from output.abc import Handler
 from telegram import Bot
+from telegram.utils.request import Request
 
 
 class TelegramHandler(Handler):
     def init(self, core, config: Config) -> None:
         self._core = core
         self._config = config
-        self._bot = Bot(self._config.output.telegram.token)
+        self._rq = Request(proxy_url=proxy.http())
+        self._bot = Bot(self._config.output.telegram.token, request=self._rq)
 
     def send_message(self, text: str, files: List[str] = []):
         if files:
