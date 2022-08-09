@@ -10,7 +10,7 @@ from input.abc import Listener
 
 class _DiscordClient(discord.Client):
     def __init__(self, core, config: Config):
-        super().__init__(proxy=proxy.http())
+        super().__init__(proxy=proxy.http(), intents=discord.Intents.all())
         self._core = core
         self._config = config
 
