@@ -1,5 +1,5 @@
 cairosvg==2.5.2                             # common
-discord-webhook==0.15.0                     # discord output
+discord-webhook==0.16.3                     # discord output
 lottie==0.6.11                              # telegram input
 py-cord==1.7.3                              # discord input
 python-telegram-bot==13.11                  # telegram input/output
