@@ -38,4 +38,9 @@ output:
     bcc_addrs:
       - <destination_email_address>
     subject: <subject>
+  matrix:
+    server: <matrix_host_link>
+    user: <username>
+    password: <password>
+    room_id: <matrix_room_id> # Looks like: !opaque_id:domain
 ```
