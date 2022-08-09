@@ -9,7 +9,7 @@ def tmp_dir() -> str:
 
 
 def current_dir_name() -> str:
-    return os.path.basename(os.getcwd()).upper()
+    return os.path.basename(os.getcwd())
 
 
 def tmp_random_filename(ext=None):
