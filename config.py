@@ -40,6 +40,14 @@ class EmailOutputConfig:
     subject: str
 
 
+@dataclass
+class MatrixOutputConfig:
+    server: str
+    user: str
+    password: str
+    room_id: str
+
+
 class Config:
     def __init__(self, json) -> None:
         # Input

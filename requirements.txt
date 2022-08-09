@@ -5,3 +5,4 @@ py-cord==1.7.3                              # discord input
 python-telegram-bot==13.11                  # telegram input/output
 PyYAML==6.0                                 # common
 requests==2.27.1                            # common
+matrix-client==0.4.0                        # matrix output
