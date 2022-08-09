@@ -5,7 +5,7 @@ from typing import List
 from config import Config
 from logger import log
 from nio import AsyncClient
-from utils import proxy
+from utils import current_dir_name, proxy
 
 from output.abc import Handler
 
@@ -17,7 +17,7 @@ class MatrixHandler(Handler):
         self._client = AsyncClient(
             homeserver=config.output.matrix.server,
             user=config.output.matrix.user,
-            device_id="DISCBRIDGE",
+            device_id=current_dir_name().upper(),
             proxy=proxy.http(),
             )
         self._loop = asyncio.new_event_loop()
