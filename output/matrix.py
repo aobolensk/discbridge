@@ -2,7 +2,6 @@ from typing import List
 
 from config import Config
 from logger import log
-from utils import proxy
 
 from output.abc import Handler
 from matrix_client.client import MatrixClient
