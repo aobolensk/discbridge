@@ -1,6 +1,6 @@
 # discbridge
 
-discbridge allows you to bridge your messages between different messenger platforms.
+discbridge allows you to bridge your messages between [different messenger platforms](docs/support-table.md).
 
 ## How to run:
 ```console
