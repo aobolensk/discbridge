@@ -9,7 +9,7 @@ class Log:
         return cls._instance
 
     def __init__(self):
-        self._log = logging.getLogger("WalBot")
+        self._log = logging.getLogger("discbridge")
         self._log.setLevel(logging.DEBUG)
         formatter = logging.Formatter("%(asctime)s [%(levelname)s]: %(message)s")
         console_handler = logging.StreamHandler()
