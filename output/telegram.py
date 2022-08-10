@@ -29,4 +29,4 @@ class TelegramHandler(Handler):
         return "telegram"
 
     def close(self) -> None:
-        pass
+        self._bot.close()
