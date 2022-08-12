@@ -13,6 +13,10 @@ input:
     token: <token>
     chat_filter: false
     chat_ids: []
+  email:
+    imap_server: <receiver_email_imap_server>
+    email: <email>
+    password: <password>
 output:
   discord:
     webhook_link: <link>
