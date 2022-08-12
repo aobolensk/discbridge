@@ -35,22 +35,25 @@ class EmailListener(Listener):
             return
         conn.select()
         retcode, messages = conn.search(None, '(UNSEEN)')
-        if retcode == 'OK':
-            for num in messages[0].split():
-                retcode, data = conn.fetch(num, '(RFC822)')
-                if retcode == 'OK':
-                    msg = email.message_from_bytes(data[0][1])
-                    text = ""
-                    if msg.is_multipart():
-                        for part in msg.walk():
-                            if part.get_content_type() == 'text/html':
-                                body = part.get_payload(decode=True)
-                                text += body.decode('utf-8')
-                    else:
-                        text += msg.get_payload(decode=True).decode('utf-8')
-                    conn.store(num, '+FLAGS', '\\SEEN')
-                    text = self._format_header(msg) + html2text.html2text(text)
-                    self._core.send_message(text)
+        if retcode != 'OK':
+            pass
+        for num in messages[0].split():
+            retcode, data = conn.fetch(num, '(RFC822)')
+            if retcode != 'OK':
+                log.warning(f"EmailListener fetch failed: {retcode}")
+                continue
+            msg = email.message_from_bytes(data[0][1])
+            text = ""
+            if msg.is_multipart():
+                for part in msg.walk():
+                    if part.get_content_type() == 'text/html':
+                        body = part.get_payload(decode=True)
+                        text += body.decode('utf-8')
+            else:
+                text += msg.get_payload(decode=True).decode('utf-8')
+            conn.store(num, '+FLAGS', '\\SEEN')
+            text = self._format_header(msg) + html2text.html2text(text)
+            self._core.send_message(text)
 
     def get_name(self) -> str:
         return "email"
