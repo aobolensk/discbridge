@@ -40,3 +40,21 @@ output:
     password: <password>
     room_id: <matrix_room_id> # Looks like: !opaque_id:domain
 ```
+
+It is possible to add multiple input and output configurations.
+You can add them using the following pattern: `<input/output_name>.<custom_name>` (e.g. `telegram.main` or `email.test`).
+First part should be backend type the second part (after dot) is custom name which is up to user.
+
+Example:
+
+```yaml
+input:
+  telegram.1:
+    token: <token>
+    chat_filter: false
+    chat_ids: []
+  telegram.2:
+    token: <token>
+    chat_filter: false
+    chat_ids: []
+```
