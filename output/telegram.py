@@ -14,15 +14,15 @@ class TelegramHandler(Handler):
         self._core = core
         self._config = config
         self._rq = Request(proxy_url=proxy.http())
-        self._bot = Bot(self._config.output.telegram.token, request=self._rq)
+        self._bot = Bot(self._config.output[self.get_instance_name()].token, request=self._rq)
 
     def send_message(self, text: str, files: List[str] = []):
         if files:
             for file in files:
                 self._bot.send_document(
-                    self._config.output.telegram.chat_id, open(file, 'rb'), caption=text)
+                    self._config.output[self.get_instance_name()].chat_id, open(file, 'rb'), caption=text)
         else:
-            self._bot.send_message(self._config.output.telegram.chat_id, text)
+            self._bot.send_message(self._config.output[self.get_instance_name()].chat_id, text)
         log.message(self.__class__.__name__, text, files)
 
     def get_name(self) -> str:

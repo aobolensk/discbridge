@@ -25,9 +25,11 @@ class EmailListener(Listener):
             time.sleep(60)
 
     def _check_email(self):
-        conn = imaplib.IMAP4_SSL(self._config.input.email.imap_server)
+        conn = imaplib.IMAP4_SSL(self._config.input[self.get_instance_name()].imap_server)
         try:
-            retcode, capabilities = conn.login(self._config.input.email.email, self._config.input.email.password)
+            retcode, capabilities = conn.login(
+                self._config.input[self.get_instance_name()].email,
+                self._config.input[self.get_instance_name()].password)
         except Exception as e:
             log.error(f"EmailListener init failed: {e}")
             return

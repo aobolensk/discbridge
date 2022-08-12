@@ -60,8 +60,8 @@ class Config:
         # Input
         self.input = dotdict()
         for input_name, config in json["input"].items():
-            self.input[input_name] = globals()[f"{input_name.title()}InputConfig"](**(config))
+            self.input[input_name] = globals()[f"{input_name.split('.')[0].title()}InputConfig"](**(config))
         # Output
         self.output = dotdict()
         for output_name, config in json["output"].items():
-            self.output[output_name] = globals()[f"{output_name.title()}OutputConfig"](**(config))
+            self.output[output_name] = globals()[f"{output_name.split('.')[0].title()}OutputConfig"](**(config))

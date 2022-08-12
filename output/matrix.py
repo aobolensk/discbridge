@@ -15,8 +15,8 @@ class MatrixHandler(Handler):
         self._core = core
         self._config = config
         self._client = AsyncClient(
-            homeserver=config.output.matrix.server,
-            user=config.output.matrix.user,
+            homeserver=config.output[self.get_instance_name()].server,
+            user=config.output[self.get_instance_name()].user,
             device_id=current_dir_name().upper(),
             proxy=proxy.http(),
             )
@@ -24,11 +24,11 @@ class MatrixHandler(Handler):
         self._loop.run_until_complete(self._login())
 
     async def _login(self):
-        await self._client.login(self._config.output.matrix.password)
+        await self._client.login(self._config.output[self.get_instance_name()].password)
 
     async def _send_message_impl(self, text):
         await self._client.room_send(
-            room_id=self._config.output.matrix.room_id,
+            room_id=self._config.output[self.get_instance_name()].room_id,
             message_type="m.room.message",
             content={"msgtype": "m.text", "body": text},
         )

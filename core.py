@@ -54,10 +54,11 @@ class Core:
             module = importlib.import_module(listeners_dir + "." + os.path.splitext(file)[0])
             listeners = [obj[1] for obj in inspect.getmembers(module, inspect.isclass)
                          if issubclass(obj[1], Listener) and obj[1] != Listener]
-            for listener in listeners:
-                if listener.get_name(listener) in self._config.input.keys():
-                    self._listeners.append(listener())
-                    log.info("Input: Added " + listener.__name__)
+            for input in self._config.input.keys():
+                for listener in listeners:
+                    if input.startswith(listener.get_name(listener)):
+                        self._listeners.append(listener(input))
+                        log.info(f"Input: Added {input} ({listener.__name__})")
 
     def _run_listeners(self) -> None:
         for listener in self._listeners:
@@ -69,10 +70,11 @@ class Core:
             module = importlib.import_module(handlers_dir + "." + os.path.splitext(file)[0])
             handlers = [obj[1] for obj in inspect.getmembers(module, inspect.isclass)
                         if issubclass(obj[1], Handler) and obj[1] != Handler]
-            for handler in handlers:
-                if handler.get_name(handler) in self._config.output.keys():
-                    self._handlers.append(handler())
-                    log.info("Output: Added " + handler.__name__)
+            for output in self._config.output.keys():
+                for handler in handlers:
+                    if output.startswith(handler.get_name(handler)):
+                        self._handlers.append(handler(output))
+                        log.info(f"Output: Added {output} ({handler.__name__})")
         for handler in self._handlers:
             handler.init(self, self._config)
 

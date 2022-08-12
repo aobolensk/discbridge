@@ -19,7 +19,7 @@ class DiscordHandler(Handler):
 
     def send_message(self, text: str, files: List[str] = []):
         webhook = DiscordWebhook(
-            url=self._config.output.discord.webhook_link, rate_limit_retry=True,
+            url=self._config.output[self.get_instance_name()].webhook_link, rate_limit_retry=True,
             content=text, proxies=self._proxy)
         for file in files:
             webhook.add_file(file=open(file, "rb").read(), filename=file)
@@ -35,7 +35,7 @@ class DiscordHandler(Handler):
 
     def _retry_without_files(self, text: str):
         webhook = DiscordWebhook(
-            url=self._config.output.discord.webhook_link, rate_limit_retry=True,
+            url=self._config.output[self.get_instance_name()].webhook_link, rate_limit_retry=True,
             content=text, proxies=self._proxy)
         resp = webhook.execute()
         if resp.status_code in (200, 204):

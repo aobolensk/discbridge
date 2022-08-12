@@ -6,8 +6,9 @@ from logger import log
 
 
 class Listener(abc.ABC):
-    def __init__(self) -> None:
+    def __init__(self, instance_name: str) -> None:
         super().__init__()
+        self._instance_name = instance_name
 
     def run(self, core, config: Config):
         try:
@@ -22,3 +23,6 @@ class Listener(abc.ABC):
 
     def get_name(self) -> str:
         pass
+
+    def get_instance_name(self) -> str:
+        return self._instance_name

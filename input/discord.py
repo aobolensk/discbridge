@@ -9,8 +9,9 @@ from input.abc import Listener
 
 
 class _DiscordClient(discord.Client):
-    def __init__(self, core, config: Config):
+    def __init__(self, instance_name: str, core, config: Config):
         super().__init__(proxy=proxy.http(), intents=discord.Intents.all())
+        self._instance_name = instance_name
         self._core = core
         self._config = config
 
@@ -60,7 +61,8 @@ class _DiscordClient(discord.Client):
     async def on_message(self, message: discord.Message):
         if message.author.id == self.user.id:
             return
-        if self._config.input.discord.chat_filter and message.channel.id not in self._config.input.discord.chat_ids:
+        if (self._config.input[self._instance_name].chat_filter and
+                message.channel.id not in self._config.input[self._instance_name].chat_ids):
             return
         text = self._format_header(message)
         text += message.content
@@ -80,8 +82,8 @@ class DiscordListener(Listener):
         self._config = config
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        client = _DiscordClient(core, config)
-        client.run(self._config.input.discord.token)
+        client = _DiscordClient(self.get_instance_name(), core, config)
+        client.run(self._config.input[self.get_instance_name()].token)
 
     def get_name(self):
         return "discord"
