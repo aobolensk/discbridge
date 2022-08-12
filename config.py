@@ -19,6 +19,13 @@ class DiscordInputConfig:
 
 
 @dataclass
+class EmailInputConfig:
+    email: str
+    password: str
+    imap_server: str
+
+
+@dataclass
 class TelegramOutputConfig:
     token: str
     chat_id: int
