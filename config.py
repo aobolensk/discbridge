@@ -9,6 +9,7 @@ class TelegramInputConfig:
     token: str
     chat_filter: bool
     chat_ids: List[int]
+    polling_interval: int = 600
 
 
 @dataclass

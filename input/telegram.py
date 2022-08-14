@@ -145,9 +145,9 @@ class TelegramListener(Listener):
         dispatcher.add_handler(MessageHandler(Filters.voice, self._on_attachment))
         dispatcher.add_handler(MessageHandler(Filters.status_update, self._on_status_update))
 
-        updater.start_polling(timeout=600)
+        updater.start_polling(timeout=config.input[self.get_instance_name()].polling_interval)
         while True:
-            time.sleep(100)
+            time.sleep(config.input[self.get_instance_name()].polling_interval)
 
     def get_name(self) -> str:
         return "telegram"
