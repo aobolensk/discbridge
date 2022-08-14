@@ -9,6 +9,7 @@ input:
     token: <token>
     chat_filter: false
     chat_ids: []
+    polling_interval: 600
   discord:
     token: <token>
     chat_filter: false
@@ -17,6 +18,7 @@ input:
     imap_server: <receiver_email_imap_server>
     email: <email>
     password: <password>
+    check_interval: 60
 output:
   discord:
     webhook_link: <link>
