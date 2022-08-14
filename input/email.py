@@ -1,14 +1,13 @@
-import imaplib
 import email
+import imaplib
 import time
 
 import html2text
-
 from config import Config
 from logger import log
+from utils import tmp_random_filename
 
 from input.abc import Listener
-from utils import tmp_random_filename
 
 
 class EmailListener(Listener):
