@@ -8,6 +8,7 @@ from config import Config
 from logger import log
 
 from input.abc import Listener
+from utils import tmp_random_filename
 
 
 class EmailListener(Listener):
@@ -44,16 +45,28 @@ class EmailListener(Listener):
                 continue
             msg = email.message_from_bytes(data[0][1])
             text = ""
+            attachments = []
             if msg.is_multipart():
                 for part in msg.walk():
                     if part.get_content_type() == 'text/html':
                         body = part.get_payload(decode=True)
                         text += body.decode('utf-8')
+                    if part.get_content_maintype() == 'multipart':
+                        continue
+                    if part.get('Content-Disposition') is None:
+                        continue
+                    filename = part.get_filename()
+                    ext = filename.rsplit('.', 1)[-1]
+                    if filename:
+                        tmp_name = tmp_random_filename(ext)
+                        with open(tmp_name, 'wb') as f:
+                            f.write(part.get_payload(decode=True))
+                            attachments.append(tmp_name)
             else:
                 text += msg.get_payload(decode=True).decode('utf-8')
             conn.store(num, '+FLAGS', '\\SEEN')
             text = self._format_header(msg) + html2text.html2text(text)
-            self._core.send_message(text)
+            self._core.send_message(text, attachments)
 
     def get_name(self) -> str:
         return "email"

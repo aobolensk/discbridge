@@ -4,7 +4,7 @@
 |---------------------|-------|--------|
 | Discord             | ✔️ | ✔️ |
 | Telegram            | ✔️ | ✔️ |
-| E-mail              | ✔️ (basic support) | ✔️ |
+| E-mail              | ✔️ | ✔️ |
 | Matrix              | ❌ | ⚠️ (experimental support) |
 
 input - discbridge can receive messages from this platform
