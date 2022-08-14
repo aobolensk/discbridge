@@ -23,6 +23,7 @@ class EmailInputConfig:
     email: str
     password: str
     imap_server: str
+    check_interval: int = 60
 
 
 @dataclass

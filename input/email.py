@@ -22,7 +22,7 @@ class EmailListener(Listener):
         self._config = config
         while True:
             self._check_email()
-            time.sleep(60)
+            time.sleep(self._config.input[self.get_instance_name()].check_interval)
 
     def _check_email(self):
         conn = imaplib.IMAP4_SSL(self._config.input[self.get_instance_name()].imap_server)
