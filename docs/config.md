@@ -7,18 +7,18 @@ If you do not need any backend just omit corresponding part of config.
 input:
   telegram:
     token: <token>
-    chat_filter: false
-    chat_ids: []
-    polling_interval: 600
+    chat_filter: false            # optional
+    chat_ids: []                  # optional
+    polling_interval: 600         # optional
   discord:
     token: <token>
-    chat_filter: false
-    chat_ids: []
+    chat_filter: false            # optional
+    chat_ids: []                  # optional
   email:
     imap_server: <receiver_email_imap_server>
     email: <email>
     password: <password>
-    check_interval: 60
+    check_interval: 60            # optional
 output:
   discord:
     webhook_link: <link>
