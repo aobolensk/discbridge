@@ -14,5 +14,5 @@ Use Ctrl+C to stop.
 
 ## FAQ
 
-Config setup: [Read](docs/config.md)
-What platforms are supported? [Read](docs/support-table.md)
+Config setup: [Read](docs/config.md)<br>
+What platforms are supported? [Read](docs/support-table.md)<br>
