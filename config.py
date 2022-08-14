@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 from utils import dotdict
@@ -7,16 +7,16 @@ from utils import dotdict
 @dataclass
 class TelegramInputConfig:
     token: str
-    chat_filter: bool
-    chat_ids: List[int]
+    chat_filter: bool = False
+    chat_ids: List[int] = field(default_factory=list)
     polling_interval: int = 600
 
 
 @dataclass
 class DiscordInputConfig:
     token: str
-    chat_filter: bool
-    chat_ids: List[int]
+    chat_filter: bool = False
+    chat_ids: List[int] = field(default_factory=list)
 
 
 @dataclass
