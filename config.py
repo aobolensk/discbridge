@@ -43,10 +43,10 @@ class EmailOutputConfig:
     email: str
     password: str
     smtp_server: str
-    to_addrs: List[str]
-    cc_addrs: List[str]
-    bcc_addrs: List[str]
     subject: str
+    to_addrs: List[str] = field(default_factory=list)
+    cc_addrs: List[str] = field(default_factory=list)
+    bcc_addrs: List[str] = field(default_factory=list)
 
 
 @dataclass
