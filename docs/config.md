@@ -37,10 +37,11 @@ output:
     bcc_addrs:                    # optional
       - <destination_email_address>
   matrix:
-    server: <matrix_host_link>
-    user: <username>
-    password: <password>
-    room_id: <matrix_room_id> # Looks like: !opaque_id:domain
+    store_path: <store_path>
+    credentials_json: <path_to_json>
+    password: <user_password>
+    room_id: <matrix_room_id>     # Looks like: !opaque_id:domain
+    # To get necessary data for matrix output see backend specific instructions
 ```
 
 It is possible to add multiple input and output configurations.
