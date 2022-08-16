@@ -30,9 +30,9 @@ class MatrixListener(Listener):
 
     async def _media_callback(self, room: MatrixRoom, event: RoomMessage):
         text = self._format_header(room, event)
-        mxc = urlparse(event.url)
-        log.error(event.url)
-        media_data = (await self._client.download(mxc.netloc, mxc.path.strip("/"))).body
+        mxc_link = urlparse(event.url)
+        media_data = (
+            await self._client.download(mxc_link.netloc, mxc_link.path.strip("/"))).body
         filename = tmp_random_filename(ext=event.body.split(".")[-1])
         async with aiofiles.open(filename, "wb") as f:
             if isinstance(event, RoomMessageMedia):
