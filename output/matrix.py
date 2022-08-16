@@ -73,11 +73,6 @@ class MatrixHandler(Handler):
                     "msgtype": "m.image",
                     "url": resp.content_uri,
                 }
-                await self._client.room_send(
-                    self._config.output[self.get_instance_name()].room_id,
-                    message_type="m.room.message",
-                    content=content
-                )
             else:
                 content = {
                     "body": os.path.basename(file),
@@ -88,11 +83,11 @@ class MatrixHandler(Handler):
                     "msgtype": "m.file",
                     "url": resp.content_uri,
                 }
-                await self._client.room_send(
-                    self._config.output[self.get_instance_name()].room_id,
-                    message_type="m.room.message",
-                    content=content
-                )
+            await self._client.room_send(
+                self._config.output[self.get_instance_name()].room_id,
+                message_type="m.room.message",
+                content=content
+            )
 
     def _send_message(self, text, files):
         self._loop.run_until_complete(self._send_message_impl(text, files))
