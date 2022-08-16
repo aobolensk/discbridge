@@ -51,8 +51,8 @@ class EmailOutputConfig:
 
 @dataclass
 class MatrixOutputConfig:
-    server: str
-    user: str
+    store_path: str
+    credentials_json: str
     password: str
     room_id: str
 
