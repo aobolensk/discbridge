@@ -2,11 +2,14 @@
 import asyncio
 import datetime
 import json
+from urllib.parse import urlparse
 
+import aiofiles
 from config import Config
 from logger import log
-from nio import AsyncClient, MatrixRoom, RoomMessageText
-from utils import proxy
+from nio import (AsyncClient, MatrixRoom, RoomEncryptedMedia, RoomMessage,
+                 RoomMessageMedia, RoomMessageText, crypto)
+from utils import proxy, tmp_random_filename
 
 from input.abc import Listener
 
@@ -25,6 +28,24 @@ class MatrixListener(Listener):
         text += event.body
         self._core.send_message(text)
 
+    async def _media_callback(self, room: MatrixRoom, event: RoomMessage):
+        text = self._format_header(room, event)
+        mxc = urlparse(event.url)
+        log.error(event.url)
+        media_data = (await self._client.download(mxc.netloc, mxc.path.strip("/"))).body
+        filename = tmp_random_filename(ext=event.body.split(".")[-1])
+        async with aiofiles.open(filename, "wb") as f:
+            if isinstance(event, RoomMessageMedia):
+                await f.write(media_data)
+            elif isinstance(event, RoomEncryptedMedia):
+                await f.write(
+                    crypto.attachments.decrypt_attachment(
+                        media_data,
+                        event.source["content"]["file"]["key"]["k"],
+                        event.source["content"]["file"]["hashes"]["sha256"],
+                        event.source["content"]["file"]["iv"]))
+        self._core.send_message(text, [filename])
+
     async def _login(self):
         await self._client.login(
             self._config.input[self.get_instance_name()].password,
@@ -33,6 +54,8 @@ class MatrixListener(Listener):
         )
         await self._client.sync(timeout=30000)
         self._client.add_event_callback(self._message_callback, RoomMessageText)
+        self._client.add_event_callback(self._media_callback, RoomMessageMedia)
+        self._client.add_event_callback(self._media_callback, RoomEncryptedMedia)
         await self._client.sync_forever(timeout=30000, full_state=True)
 
     def start(self, core, config: Config):
