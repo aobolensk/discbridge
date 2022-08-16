@@ -28,6 +28,14 @@ class EmailInputConfig:
 
 
 @dataclass
+class MatrixInputConfig:
+    store_path: str
+    credentials_json: str
+    password: str
+    room_id: str
+
+
+@dataclass
 class TelegramOutputConfig:
     token: str
     chat_id: int
