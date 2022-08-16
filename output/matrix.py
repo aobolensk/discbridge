@@ -34,7 +34,7 @@ class MatrixHandler(Handler):
             device_name=self._credentials["device_id"],
             token=self._credentials["access_token"]
         )
-        resp = await self._client.sync(full_state=True)
+        await self._client.sync(full_state=True)
 
     async def _send_message_impl(self, text):
         await self._client.room_send(
