@@ -74,13 +74,19 @@ class MatrixHandler(Handler):
                     "url": resp.content_uri,
                 }
             else:
+                if mime_type.startswith("video/"):
+                    msg_type = "m.video"
+                elif mime_type.startswith("audio/"):
+                    msg_type = "m.audio"
+                else:
+                    msg_type = "m.file"
                 content = {
                     "body": os.path.basename(file),
                     "info": {
                         "size": file_stat.st_size,
                         "mimetype": mime_type,
                     },
-                    "msgtype": "m.file",
+                    "msgtype": msg_type,
                     "url": resp.content_uri,
                 }
             await self._client.room_send(
