@@ -17,7 +17,7 @@ class EmailListener(Listener):
         return result
 
     def start(self, core, config: Config):
-        log.info("Input: EmailListener start")
+        log.info(f"Input: {self.get_instance_name()} (EmailListener) start")
         self._core = core
         self._config = config
         while True:

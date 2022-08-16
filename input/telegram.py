@@ -128,7 +128,7 @@ class TelegramListener(Listener):
         self._core.send_message(text)
 
     def start(self, core, config: Config):
-        log.info("Input: TelegramListener start")
+        log.info(f"Input: {self.get_instance_name()} (TelegramListener) start")
         self._core = core
         self._config = config
         updater = Updater(config.input[self.get_instance_name()].token, request_kwargs={
