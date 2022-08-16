@@ -33,7 +33,11 @@ class MatrixListener(Listener):
         mxc_link = urlparse(event.url)
         media_data = (
             await self._client.download(mxc_link.netloc, mxc_link.path.strip("/"))).body
-        filename = tmp_random_filename(ext=event.body.split(".")[-1])
+        if event.body == "Voice message":
+            extension = "ogg"
+        else:
+            extension = event.body.split(".")[-1]
+        filename = tmp_random_filename(ext=extension)
         async with aiofiles.open(filename, "wb") as f:
             if isinstance(event, RoomMessageMedia):
                 await f.write(media_data)
