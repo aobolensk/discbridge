@@ -52,25 +52,35 @@ class TelegramListener(Listener):
             ": "
         )
 
-    def _on_message(self, update: Update, context: CallbackContext) -> None:
+    def _check_message(self, msg: telegram.Message) -> bool:
         if (self._config.input[self.get_instance_name()].chat_filter
-                and update.message.chat.id not in self._config.input[self.get_instance_name()].chat_ids):
-            log.info(f"Telegram: Ignoring message in channel {update.message.chat.id}")
-            return
+                and msg.chat.id not in self._config.input[self.get_instance_name()].chat_ids):
+            log.info(
+                f"{self.get_instance_name()} (Telegram): "
+                f"Ignoring message in channel {msg.chat.id}")
+            return False
         if (self._config.input[self.get_instance_name()].user_blocklist
-                and update.message.from_user.id in self._config.input[self.get_instance_name()].user_blocklist_ids):
-            log.info(f"Telegram: Ignoring message from user {update.message.from_user.id} (in blocklist)")
-            return
+                and msg.from_user.id in self._config.input[self.get_instance_name()].user_blocklist_ids):
+            log.info(
+                f"{self.get_instance_name()} (Telegram): "
+                f"Ignoring message from user {msg.from_user.id} (in blocklist)")
+            return False
         if (self._config.input[self.get_instance_name()].user_allowlist
-                and update.message.from_user.id not in self._config.input[self.get_instance_name()].user_allowlist_ids):
-            log.info(f"Telegram: Ignoring message from user {update.message.from_user.id} (not in allowlist)")
+                and msg.from_user.id not in self._config.input[self.get_instance_name()].user_allowlist_ids):
+            log.info(
+                f"{self.get_instance_name()} (Telegram): "
+                f"Ignoring message from user {msg.from_user.id} (not in allowlist)")
+            return False
+        return True
+
+    def _on_message(self, update: Update, context: CallbackContext) -> None:
+        if not self._check_message(update.message):
             return
         text = self._format_header(update.message) + update.message.text
         self._core.send_message(text)
 
     def _on_sticker(self, update: Update, context: CallbackContext) -> None:
-        if (self._config.input[self.get_instance_name()].chat_filter
-                and update.message.chat.id not in self._config.input[self.get_instance_name()].chat_ids):
+        if not self._check_message(update.message):
             return
         t = threading.Thread(target=self._sticker_process_async, args=(update, context))
         t.setDaemon(True)
@@ -84,8 +94,7 @@ class TelegramListener(Listener):
         self._core.send_message(text, [gif_file])
 
     def _on_attachment(self, update: Update, context: CallbackContext) -> None:
-        if (self._config.input[self.get_instance_name()].chat_filter
-                and update.message.chat.id not in self._config.input[self.get_instance_name()].chat_ids):
+        if not self._check_message(update.message):
             return
         file = self._download_file(update.message.effective_attachment.file_id)
         text = self._format_header(update.message) + (update.message.caption or '')
