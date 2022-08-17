@@ -25,13 +25,13 @@ class DiscordHandler(Handler):
             webhook.add_file(file=open(file, "rb").read(), filename=file)
         resp = webhook.execute()
         if resp.status_code in (200, 204):
-            log.message(self.__class__.__name__, text, files)
+            log.message(self.get_instance_name(), text, files)
         elif resp.status_code == 413:
             text_ext = (
                 text + "\n" + f"`+ {len(files)} file(s) that couldn't be uploaded (too big to upload to Discord)`")
             self._retry_without_files(text_ext)
         else:
-            log.error(f"[{self.__class__.__name__}] ERROR: {resp} ({text})")
+            log.error(f"[{self.get_instance_name()}] ERROR: {resp} ({text})")
 
     def _retry_without_files(self, text: str):
         webhook = DiscordWebhook(
@@ -39,9 +39,9 @@ class DiscordHandler(Handler):
             content=text, proxies=self._proxy)
         resp = webhook.execute()
         if resp.status_code in (200, 204):
-            log.message(self.__class__.__name__, text)
+            log.message(self.get_instance_name(), text)
         else:
-            log.error(f"[{self.__class__.__name__}] ERROR: {resp} ({text})")
+            log.error(f"[{self.get_instance_name()}] ERROR: {resp} ({text})")
 
     def get_name(self) -> str:
         return "discord"

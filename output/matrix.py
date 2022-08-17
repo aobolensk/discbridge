@@ -100,7 +100,7 @@ class MatrixHandler(Handler):
 
     def send_message(self, text: str, files: List[str] = []):
         threading.Thread(target=self._send_message, args=(text, files)).start()
-        log.message(self.__class__.__name__, text, files)
+        log.message(self.get_instance_name(), text, files)
 
     def get_name(self) -> str:
         return "matrix"
