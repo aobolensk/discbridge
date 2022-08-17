@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional
 
 from config import Config
 from logger import log
@@ -9,8 +10,8 @@ from input.abc import Listener
 
 
 class _DiscordClient(discord.Client):
-    def __init__(self, instance_name: str, core, config: Config):
-        super().__init__(proxy=proxy.http(), intents=discord.Intents.all())
+    def __init__(self, instance_name: str, core, config: Config, proxy: Optional[str] = None):
+        super().__init__(proxy=proxy, intents=discord.Intents.all())
         self._instance_name = instance_name
         self._core = core
         self._config = config
@@ -82,7 +83,8 @@ class DiscordListener(Listener):
         self._config = config
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        client = _DiscordClient(self.get_instance_name(), core, config)
+        proxy_setting = proxy.http() if config.input[self.get_instance_name()].proxy else None
+        client = _DiscordClient(self.get_instance_name(), core, config, proxy=proxy_setting)
         client.run(self._config.input[self.get_instance_name()].token)
 
     def get_name(self):

@@ -14,6 +14,7 @@ class TelegramInputConfig:
     user_blocklist_ids: List[int] = field(default_factory=list)
     user_allowlist: bool = False
     user_allowlist_ids: List[int] = field(default_factory=list)
+    proxy: bool = False
 
 
 @dataclass
@@ -21,6 +22,7 @@ class DiscordInputConfig:
     token: str
     chat_filter: bool = False
     chat_ids: List[int] = field(default_factory=list)
+    proxy: bool = False
 
 
 @dataclass
@@ -37,17 +39,20 @@ class MatrixInputConfig:
     credentials_json: str
     password: str
     room_id: str
+    proxy: bool = False
 
 
 @dataclass
 class TelegramOutputConfig:
     token: str
     chat_id: int
+    proxy: bool = False
 
 
 @dataclass
 class DiscordOutputConfig:
     webhook_link: str
+    proxy: bool = False
 
 
 @dataclass
@@ -67,6 +72,7 @@ class MatrixOutputConfig:
     credentials_json: str
     password: str
     room_id: str
+    proxy: bool = False
 
 
 class Config:

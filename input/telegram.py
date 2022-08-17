@@ -148,8 +148,9 @@ class TelegramListener(Listener):
         log.info(f"Input: {self.get_instance_name()} (TelegramListener) start")
         self._core = core
         self._config = config
+        proxy_setting = proxy.http() if config.input[self.get_instance_name()].proxy else None
         updater = Updater(config.input[self.get_instance_name()].token, request_kwargs={
-            "proxy_url": proxy.http(),
+            "proxy_url": proxy_setting,
         })
         dispatcher = updater.dispatcher
         dispatcher.add_handler(MessageHandler(Filters.text, self._on_message))

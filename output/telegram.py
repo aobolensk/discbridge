@@ -13,7 +13,8 @@ class TelegramHandler(Handler):
     def init(self, core, config: Config) -> None:
         self._core = core
         self._config = config
-        self._rq = Request(proxy_url=proxy.http())
+        proxy_setting = proxy.http() if config.output[self.get_instance_name()].proxy else None
+        self._rq = Request(proxy_url=proxy_setting)
         self._bot = Bot(self._config.output[self.get_instance_name()].token, request=self._rq)
 
     def send_message(self, text: str, files: List[str] = []):

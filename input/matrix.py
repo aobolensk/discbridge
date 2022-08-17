@@ -71,11 +71,12 @@ class MatrixListener(Listener):
 
         self._loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self._loop)
+        proxy_setting = proxy.http() if config.input[self.get_instance_name()].proxy else None
         self._client = AsyncClient(
             homeserver=self._credentials["homeserver"],
             user=self._credentials["user_id"],
             device_id=self._credentials["device_id"],
-            proxy=proxy.http(),
+            proxy=proxy_setting,
             store_path=config.input[self.get_instance_name()].store_path,
         )
         self._loop.run_until_complete(self._login())

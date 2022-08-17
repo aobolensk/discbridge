@@ -12,9 +12,11 @@ class DiscordHandler(Handler):
     def init(self, core, config: Config) -> None:
         self._core = core
         self._config = config
+        proxy_setting_http = proxy.http() if config.output[self.get_instance_name()].proxy else None
+        proxy_setting_https = proxy.https() if config.output[self.get_instance_name()].proxy else None
         self._proxy = {
-            "http": proxy.http(),
-            "https": proxy.https(),
+            "http": proxy_setting_http,
+            "https": proxy_setting_https,
         }
 
     def send_message(self, text: str, files: List[str] = []):

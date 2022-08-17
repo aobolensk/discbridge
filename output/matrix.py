@@ -22,12 +22,12 @@ class MatrixHandler(Handler):
         self._config = config
         with open(config.output[self.get_instance_name()].credentials_json, 'r') as f:
             self._credentials = json.load(f)
-
+        proxy_setting = proxy.http() if config.output[self.get_instance_name()].proxy else None
         self._client = AsyncClient(
             homeserver=self._credentials["homeserver"],
             user=self._credentials["user_id"],
             device_id=self._credentials["device_id"],
-            proxy=proxy.http(),
+            proxy=proxy_setting,
             store_path=config.output[self.get_instance_name()].store_path,
         )
         self._loop = asyncio.new_event_loop()
