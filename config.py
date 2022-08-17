@@ -10,6 +10,10 @@ class TelegramInputConfig:
     chat_filter: bool = False
     chat_ids: List[int] = field(default_factory=list)
     polling_interval: int = 600
+    user_blocklist: bool = False
+    user_blocklist_ids: List[int] = field(default_factory=list)
+    user_allowlist: bool = False
+    user_allowlist_ids: List[int] = field(default_factory=list)
 
 
 @dataclass
