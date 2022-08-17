@@ -10,21 +10,36 @@ input:
     chat_filter: false            # optional
     chat_ids: []                  # optional
     polling_interval: 600         # optional
+    user_blocklist: false         # optional
+    user_blocklist_ids: []        # optional
+    user_allowlist: false         # optional
+    user_allowlist_ids: []        # optional
+    proxy: false                  # optional
   discord:
     token: <token>
     chat_filter: false            # optional
     chat_ids: []                  # optional
+    proxy: false                  # optional
   email:
     imap_server: <receiver_email_imap_server>
     email: <email>
     password: <password>
     check_interval: 60            # optional
+  matrix:
+    store_path: <store_path>
+    credentials_json: <path_to_json>
+    password: <user_password>
+    room_id: <matrix_room_id>     # Looks like: !opaque_id:domain
+    proxy: false                  # optional
+    # To get necessary data for matrix output see backend specific instructions
 output:
   discord:
     webhook_link: <link>
+    proxy: false                  # optional
   telegram:
     token: <token>
     chat_id: 0
+    proxy: false                  # optional
   email:
     email: <sender_email>
     password: <sender_email_password>
@@ -41,6 +56,7 @@ output:
     credentials_json: <path_to_json>
     password: <user_password>
     room_id: <matrix_room_id>     # Looks like: !opaque_id:domain
+    proxy: false                  # optional
     # To get necessary data for matrix output see backend specific instructions
 ```
 
