@@ -55,15 +55,15 @@ class TelegramListener(Listener):
     def _on_message(self, update: Update, context: CallbackContext) -> None:
         if (self._config.input[self.get_instance_name()].chat_filter
                 and update.message.chat.id not in self._config.input[self.get_instance_name()].chat_ids):
-            log.info(f"Telegram: Ignoring message from {update.message.chat.id}")
+            log.info(f"Telegram: Ignoring message in channel {update.message.chat.id}")
             return
         if (self._config.input[self.get_instance_name()].user_blocklist
                 and update.message.from_user.id in self._config.input[self.get_instance_name()].user_blocklist_ids):
-            log.info(f"Telegram: Ignoring message from user {update.message.from_user.id} in blocklist")
+            log.info(f"Telegram: Ignoring message from user {update.message.from_user.id} (in blocklist)")
             return
         if (self._config.input[self.get_instance_name()].user_allowlist
                 and update.message.from_user.id not in self._config.input[self.get_instance_name()].user_allowlist_ids):
-            log.info(f"Telegram: Ignoring message from user {update.message.from_user.id} not in allowlist")
+            log.info(f"Telegram: Ignoring message from user {update.message.from_user.id} (not in allowlist)")
             return
         text = self._format_header(update.message) + update.message.text
         self._core.send_message(text)
