@@ -50,9 +50,10 @@ class EmailListener(Listener):
                     if part.get_content_type() == 'text/html':
                         body = part.get_payload(decode=True)
                         text += body.decode('utf-8')
-                    if part.get_content_maintype() == 'multipart':
                         continue
-                    if part.get('Content-Disposition') is None:
+                    if (part.get_content_maintype() == 'multipart' or
+                            part.get('Content-Disposition') is None or
+                            part.get_content_type() == 'text/plain'):
                         continue
                     filename = part.get_filename()
                     ext = filename.rsplit('.', 1)[-1]
