@@ -1,6 +1,5 @@
 import importlib
 import inspect
-import json
 import os
 import signal
 import sys
@@ -41,8 +40,6 @@ class Core:
             self._config = Config(yaml.load(open(self._args.config), yaml.CLoader))
         elif os.path.isfile("config.yaml"):
             self._config = Config(yaml.load(open("config.yaml"), yaml.CLoader))
-        elif os.path.isfile("config.json"):
-            self._config = Config(json.load(open("config.json")))
         else:
             log.error("No config file found!")
             sys.exit(1)

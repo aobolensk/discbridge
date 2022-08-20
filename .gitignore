@@ -2,7 +2,6 @@ __pycache__
 venv
 
 # Config files
-config.json
 config.yaml
 
 # Folder that stores local configuration files
