@@ -2,7 +2,7 @@ import shutil
 import subprocess
 import threading
 import time
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import requests
 from config import Config
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from core import Core
 
 class TelegramListener(Listener):
-    def _download_file(self, file_id: str, ext=None):
+    def _download_file(self, file_id: str, ext: Optional[str] = None) -> str:
         r = requests.get(
             f"https://api.telegram.org/bot{self._config.input[self.get_instance_name()].token}"
             f"/getFile?file_id={file_id}")
@@ -36,7 +36,7 @@ class TelegramListener(Listener):
                 shutil.copyfileobj(r.raw, f)
         return output_file
 
-    def _format_backend_header(self, msg: telegram.Message):
+    def _format_backend_header(self, msg: telegram.Message) -> str:
         text = "[Telegram] "
         if msg.chat.title:
             text += msg.chat.title + " "
@@ -45,7 +45,7 @@ class TelegramListener(Listener):
         text += f"({msg.date.astimezone()})\n"
         return text
 
-    def _format_header(self, msg: telegram.Message):
+    def _format_header(self, msg: telegram.Message) -> str:
         return (
             self._format_backend_header(msg) +
             (f"Forwarded from: {msg.forward_from.full_name} ({msg.forward_from.username})\n"

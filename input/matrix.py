@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from core import Core
 
 class MatrixListener(Listener):
-    def _format_header(self, room: MatrixRoom, event: RoomMessageText):
+    def _format_header(self, room: MatrixRoom, event: RoomMessageText) -> str:
         result = (
             f"[Matrix] {room.display_name} "
             f"({datetime.datetime.fromtimestamp(event.server_timestamp / 1000)})\n"
@@ -26,12 +26,12 @@ class MatrixListener(Listener):
         result += f"{event.sender}: "
         return result
 
-    async def _message_callback(self, room: MatrixRoom, event: RoomMessageText):
+    async def _message_callback(self, room: MatrixRoom, event: RoomMessageText) -> None:
         text = self._format_header(room, event)
         text += event.body
         self._core.send_message(text)
 
-    async def _media_callback(self, room: MatrixRoom, event: RoomMessage):
+    async def _media_callback(self, room: MatrixRoom, event: RoomMessage) -> None:
         text = self._format_header(room, event)
         mxc_link = urlparse(event.url)
         media_data = (
@@ -53,7 +53,7 @@ class MatrixListener(Listener):
                         event.source["content"]["file"]["iv"]))
         self._core.send_message(text, [filename])
 
-    async def _login(self):
+    async def _login(self) -> None:
         await self._client.login(
             self._config.input[self.get_instance_name()].password,
             device_name=self._credentials["device_id"],
@@ -65,7 +65,7 @@ class MatrixListener(Listener):
         self._client.add_event_callback(self._media_callback, RoomEncryptedMedia)
         await self._client.sync_forever(timeout=30000, full_state=True)
 
-    def start(self, core: 'Core', config: Config):
+    def start(self, core: 'Core', config: Config) -> None:
         log.info(f"Input: {self.get_instance_name()} (MatrixListener) start")
         self._core = core
         self._config = config

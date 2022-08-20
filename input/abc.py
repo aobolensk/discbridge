@@ -13,7 +13,7 @@ class Listener(abc.ABC):
         super().__init__()
         self._instance_name = instance_name
 
-    def run(self, core: 'Core', config: Config):
+    def run(self, core: 'Core', config: Config) -> None:
         try:
             t = threading.Thread(target=self.start, args=(core, config))
             t.setDaemon(True)
@@ -21,7 +21,7 @@ class Listener(abc.ABC):
         except Exception as e:
             log.error(e)
 
-    def start(self, core: 'Core', config: Config):
+    def start(self, core: 'Core', config: Config) -> None:
         pass
 
     def get_name(self) -> str:

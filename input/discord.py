@@ -12,26 +12,26 @@ if TYPE_CHECKING:
     from core import Core
 
 class _DiscordClient(discord.Client):
-    def __init__(self, instance_name: str, core: 'Core', config: Config, proxy: Optional[str] = None):
+    def __init__(self, instance_name: str, core: 'Core', config: Config, proxy: Optional[str] = None) -> None:
         super().__init__(proxy=proxy, intents=discord.Intents.all())
         self._instance_name = instance_name
         self._core = core
         self._config = config
 
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         pass
 
-    def run(self, *args, **kwargs):
+    def run(self, *args, **kwargs) -> None:
         loop = self.loop
 
-        async def runner():
+        async def runner() -> None:
             try:
                 await self.start(*args, **kwargs)
             finally:
                 if not self.is_closed():
                     await self.close()
 
-        def stop_loop_on_completion(f):
+        def stop_loop_on_completion(_) -> None:
             loop.stop()
 
         future = asyncio.ensure_future(runner(), loop=loop)
@@ -49,19 +49,19 @@ class _DiscordClient(discord.Client):
             except KeyboardInterrupt:
                 return None
 
-    def _format_backend_header(self, msg: discord.Message):
+    def _format_backend_header(self, msg: discord.Message) -> str:
         text = "[Discord] "
         if msg.channel.name:
             text += "#" + msg.channel.name + " "
         text += f"({msg.created_at.astimezone()})\n"
         return text
 
-    def _format_header(self, msg: discord.Message):
+    def _format_header(self, msg: discord.Message) -> str:
         text = self._format_backend_header(msg)
         text += msg.author.name + ": "
         return text
 
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message: discord.Message) -> None:
         if message.author.id == self.user.id:
             return
         if (self._config.input[self._instance_name].chat_filter and
@@ -79,7 +79,7 @@ class _DiscordClient(discord.Client):
 
 
 class DiscordListener(Listener):
-    def start(self, core, config: Config):
+    def start(self, core, config: Config) -> None:
         log.info(f"Input: {self.get_instance_name()} (DiscordListener) start")
         self._core = core
         self._config = config
@@ -89,5 +89,5 @@ class DiscordListener(Listener):
         client = _DiscordClient(self.get_instance_name(), core, config, proxy=proxy_setting)
         client.run(self._config.input[self.get_instance_name()].token)
 
-    def get_name(self):
+    def get_name(self) -> str:
         return "discord"

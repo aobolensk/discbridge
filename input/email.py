@@ -14,12 +14,12 @@ if TYPE_CHECKING:
     from core import Core
 
 class EmailListener(Listener):
-    def _format_header(self, msg: email.message.Message):
+    def _format_header(self, msg: email.message.Message) -> str:
         result = f"[EMAIL] {msg['to']} ({msg['date']})\n"
         result += f"{msg['from']} (subject: {msg['subject']}):\n"
         return result
 
-    def start(self, core: 'Core', config: Config):
+    def start(self, core: 'Core', config: Config) -> None:
         log.info(f"Input: {self.get_instance_name()} (EmailListener) start")
         self._core = core
         self._config = config
@@ -27,7 +27,7 @@ class EmailListener(Listener):
             self._check_email()
             time.sleep(self._config.input[self.get_instance_name()].check_interval)
 
-    def _check_email(self):
+    def _check_email(self) -> None:
         conn = imaplib.IMAP4_SSL(self._config.input[self.get_instance_name()].imap_server)
         try:
             retcode, capabilities = conn.login(

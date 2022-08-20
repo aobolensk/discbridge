@@ -17,7 +17,7 @@ class Handler(abc.ABC):
     def close(self) -> None:
         pass
 
-    def send_message(self, text: str, files: List[str]):
+    def send_message(self, text: str, files: List[str]) -> None:
         pass
 
     def get_name(self) -> str:

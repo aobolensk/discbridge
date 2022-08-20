@@ -35,7 +35,7 @@ class MatrixHandler(Handler):
         self._loop = asyncio.new_event_loop()
         self._loop.run_until_complete(self._login())
 
-    async def _login(self):
+    async def _login(self) -> None:
         await self._client.login(
             self._config.output[self.get_instance_name()].password,
             device_name=self._credentials["device_id"],
@@ -97,10 +97,10 @@ class MatrixHandler(Handler):
                 content=content
             )
 
-    def _send_message(self, text, files):
+    def _send_message(self, text: str, files: List[str]) -> None:
         self._loop.run_until_complete(self._send_message_impl(text, files))
 
-    def send_message(self, text: str, files: List[str] = []):
+    def send_message(self, text: str, files: List[str] = []) -> None:
         threading.Thread(target=self._send_message, args=(text, files)).start()
         log.message(self.get_instance_name(), text, files)
 
