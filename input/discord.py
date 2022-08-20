@@ -1,5 +1,5 @@
 import asyncio
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from config import Config
 from logger import log
@@ -8,9 +8,11 @@ from utils import proxy, tmp_random_filename
 import discord
 from input.abc import Listener
 
+if TYPE_CHECKING:
+    from core import Core
 
 class _DiscordClient(discord.Client):
-    def __init__(self, instance_name: str, core, config: Config, proxy: Optional[str] = None):
+    def __init__(self, instance_name: str, core: 'Core', config: Config, proxy: Optional[str] = None):
         super().__init__(proxy=proxy, intents=discord.Intents.all())
         self._instance_name = instance_name
         self._core = core

@@ -1,16 +1,19 @@
 import abc
 import threading
+from typing import TYPE_CHECKING
 
 from config import Config
 from logger import log
 
+if TYPE_CHECKING:
+    from core import Core
 
 class Listener(abc.ABC):
     def __init__(self, instance_name: str) -> None:
         super().__init__()
         self._instance_name = instance_name
 
-    def run(self, core, config: Config):
+    def run(self, core: 'Core', config: Config):
         try:
             t = threading.Thread(target=self.start, args=(core, config))
             t.setDaemon(True)
@@ -18,7 +21,7 @@ class Listener(abc.ABC):
         except Exception as e:
             log.error(e)
 
-    def start(self, core, config: Config):
+    def start(self, core: 'Core', config: Config):
         pass
 
     def get_name(self) -> str:

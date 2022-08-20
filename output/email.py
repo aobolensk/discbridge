@@ -3,16 +3,18 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from typing import List
+from typing import TYPE_CHECKING, List
 
 from config import Config
 from logger import log
 
 from output.abc import Handler
 
+if TYPE_CHECKING:
+    from core import Core
 
 class EmailHandler(Handler):
-    def init(self, core, config: Config) -> None:
+    def init(self, core: 'Core', config: Config) -> None:
         self._core = core
         self._config = config
         self._server = smtplib.SMTP_SSL(self._config.output[self.get_instance_name()].smtp_server)

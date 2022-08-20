@@ -1,15 +1,17 @@
 import abc
-from typing import List
+from typing import TYPE_CHECKING, List
 
 from config import Config
 
+if TYPE_CHECKING:
+    from core import Core
 
 class Handler(abc.ABC):
     def __init__(self, instance_name: str) -> None:
         super().__init__()
         self._instance_name = instance_name
 
-    def init(self, core, config: Config) -> None:
+    def init(self, core: 'Core', config: Config) -> None:
         pass
 
     def close(self) -> None:

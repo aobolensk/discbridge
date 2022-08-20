@@ -2,6 +2,7 @@ import shutil
 import subprocess
 import threading
 import time
+from typing import TYPE_CHECKING
 
 import requests
 from config import Config
@@ -13,6 +14,8 @@ from input.abc import Listener
 from telegram import Update
 from telegram.ext import CallbackContext, Filters, MessageHandler, Updater
 
+if TYPE_CHECKING:
+    from core import Core
 
 class TelegramListener(Listener):
     def _download_file(self, file_id: str, ext=None):
@@ -144,7 +147,7 @@ class TelegramListener(Listener):
             text += "Voice chat participants invited: " + msg.voice_chat_participants_invited
         self._core.send_message(text)
 
-    def start(self, core, config: Config):
+    def start(self, core: 'Core', config: Config):
         log.info(f"Input: {self.get_instance_name()} (TelegramListener) start")
         self._core = core
         self._config = config

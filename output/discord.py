@@ -1,4 +1,4 @@
-from typing import List
+from typing import TYPE_CHECKING, List
 
 from config import Config
 from discord_webhook import DiscordWebhook
@@ -7,9 +7,11 @@ from utils import proxy
 
 from output.abc import Handler
 
+if TYPE_CHECKING:
+    from core import Core
 
 class DiscordHandler(Handler):
-    def init(self, core, config: Config) -> None:
+    def init(self, core: 'Core', config: Config) -> None:
         self._core = core
         self._config = config
         proxy_setting_http = proxy.http() if config.output[self.get_instance_name()].proxy else None

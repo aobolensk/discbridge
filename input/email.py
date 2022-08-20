@@ -1,6 +1,7 @@
 import email
 import imaplib
 import time
+from typing import TYPE_CHECKING
 
 import html2text
 from config import Config
@@ -9,6 +10,8 @@ from utils import tmp_random_filename
 
 from input.abc import Listener
 
+if TYPE_CHECKING:
+    from core import Core
 
 class EmailListener(Listener):
     def _format_header(self, msg: email.message.Message):
@@ -16,7 +19,7 @@ class EmailListener(Listener):
         result += f"{msg['from']} (subject: {msg['subject']}):\n"
         return result
 
-    def start(self, core, config: Config):
+    def start(self, core: 'Core', config: Config):
         log.info(f"Input: {self.get_instance_name()} (EmailListener) start")
         self._core = core
         self._config = config

@@ -2,6 +2,7 @@
 import asyncio
 import datetime
 import json
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
 import aiofiles
@@ -13,6 +14,8 @@ from utils import proxy, tmp_random_filename
 
 from input.abc import Listener
 
+if TYPE_CHECKING:
+    from core import Core
 
 class MatrixListener(Listener):
     def _format_header(self, room: MatrixRoom, event: RoomMessageText):
@@ -62,7 +65,7 @@ class MatrixListener(Listener):
         self._client.add_event_callback(self._media_callback, RoomEncryptedMedia)
         await self._client.sync_forever(timeout=30000, full_state=True)
 
-    def start(self, core, config: Config):
+    def start(self, core: 'Core', config: Config):
         log.info(f"Input: {self.get_instance_name()} (MatrixListener) start")
         self._core = core
         self._config = config

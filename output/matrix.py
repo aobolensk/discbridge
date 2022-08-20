@@ -2,7 +2,7 @@ import asyncio
 import json
 import os
 import threading
-from typing import List
+from typing import TYPE_CHECKING, List
 
 import aiofiles
 import aiofiles.os
@@ -15,9 +15,11 @@ from utils import proxy
 
 from output.abc import Handler
 
+if TYPE_CHECKING:
+    from core import Core
 
 class MatrixHandler(Handler):
-    def init(self, core, config: Config) -> None:
+    def init(self, core: 'Core', config: Config) -> None:
         self._core = core
         self._config = config
         with open(config.output[self.get_instance_name()].credentials_json, 'r') as f:
