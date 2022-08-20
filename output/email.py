@@ -13,6 +13,7 @@ from output.abc import Handler
 if TYPE_CHECKING:
     from core import Core
 
+
 class EmailHandler(Handler):
     def init(self, core: 'Core', config: Config) -> None:
         self._core = core

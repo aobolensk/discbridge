@@ -6,6 +6,7 @@ from config import Config
 if TYPE_CHECKING:
     from core import Core
 
+
 class Handler(abc.ABC):
     def __init__(self, instance_name: str) -> None:
         super().__init__()

@@ -11,6 +11,7 @@ from telegram.utils.request import Request
 if TYPE_CHECKING:
     from core import Core
 
+
 class TelegramHandler(Handler):
     def init(self, core: 'Core', config: Config) -> None:
         self._core = core

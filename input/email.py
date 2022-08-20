@@ -13,6 +13,7 @@ from input.abc import Listener
 if TYPE_CHECKING:
     from core import Core
 
+
 class EmailListener(Listener):
     def _format_header(self, msg: email.message.Message) -> str:
         result = f"[EMAIL] {msg['to']} ({msg['date']})\n"

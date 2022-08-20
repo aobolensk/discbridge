@@ -17,6 +17,7 @@ from telegram.ext import CallbackContext, Filters, MessageHandler, Updater
 if TYPE_CHECKING:
     from core import Core
 
+
 class TelegramListener(Listener):
     def _download_file(self, file_id: str, ext: Optional[str] = None) -> str:
         r = requests.get(

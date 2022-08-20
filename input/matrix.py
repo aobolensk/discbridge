@@ -17,6 +17,7 @@ from input.abc import Listener
 if TYPE_CHECKING:
     from core import Core
 
+
 class MatrixListener(Listener):
     def _format_header(self, room: MatrixRoom, event: RoomMessageText) -> str:
         result = (

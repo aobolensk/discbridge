@@ -8,6 +8,7 @@ from logger import log
 if TYPE_CHECKING:
     from core import Core
 
+
 class Listener(abc.ABC):
     def __init__(self, instance_name: str) -> None:
         super().__init__()
