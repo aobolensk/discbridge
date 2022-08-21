@@ -44,6 +44,10 @@ class Core:
             log.error("No config file found!")
             sys.exit(1)
         log.debug(self._config.__dict__)
+        if not self._config.input:
+            log.warning("No input is configured")
+        if not self._config.output:
+            log.warning("No output is configured")
 
     def _init_listeners(self) -> None:
         listeners_dir = "input"
