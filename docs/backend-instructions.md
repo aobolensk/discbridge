@@ -16,6 +16,11 @@ There is a [doc](docs/config.md) about all supported config fields.
 1. Create discord webhook using [this](https://gist.github.com/jagrosh/5b1761213e33fc5b54ec7f6379034a22) instruction
 1. Paste link to config.yaml
 
+## telegram
+
+1. Create bot using [this](https://core.telegram.org/bots#6-botfather) instruction
+1. Paste bot token to config.yaml
+
 ## matrix
 
 1. Prepare bot user account
