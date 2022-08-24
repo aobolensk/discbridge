@@ -32,3 +32,9 @@ class dotdict(dict):
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
+
+
+def split_by_chunks(message: str, count: int):
+    """Split message by chunks with particular size"""
+    for i in range(0, len(message), count):
+        yield message[i:i + count]
