@@ -16,3 +16,4 @@ Use Ctrl+C to stop.
 
 Config setup: [Read](docs/config.md)<br>
 What platforms are supported? [Read](docs/support-table.md)<br>
+How to setup platform X? [Read](docs/backend-instructions.md)<br>
