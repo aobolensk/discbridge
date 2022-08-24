@@ -55,7 +55,8 @@ class EmailListener(Listener):
                         body = part.get_payload(decode=True)
                         text += body.decode('utf-8')
                         continue
-                    if (part.get_content_maintype() == 'multipart' or
+                    if not part.get_filename() and (
+                            part.get_content_maintype() == 'multipart' or
                             part.get('Content-Disposition') is None or
                             part.get_content_type() == 'text/plain'):
                         continue
