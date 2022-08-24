@@ -22,6 +22,10 @@ class DiscordInputConfig:
     token: str
     chat_filter: bool = False
     chat_ids: List[int] = field(default_factory=list)
+    user_blocklist: bool = False
+    user_blocklist_ids: List[int] = field(default_factory=list)
+    user_allowlist: bool = False
+    user_allowlist_ids: List[int] = field(default_factory=list)
     proxy: bool = False
 
 

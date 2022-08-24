@@ -62,11 +62,28 @@ class _DiscordClient(discord.Client):
         text += msg.author.name + ": "
         return text
 
+    def _check_message(self, msg: discord.Message) -> bool:
+        if (self._config.input[self._instance_name].chat_filter and
+                msg.channel.id not in self._config.input[self._instance_name].chat_ids):
+            return False
+        if (self._config.input[self._instance_name].user_blocklist
+                and msg.author.id in self._config.input[self._instance_name].user_blocklist_ids):
+            log.info(
+                f"{self._instance_name} (Discord): "
+                f"Ignoring message from user {msg.author.id} (in blocklist)")
+            return False
+        if (self._config.input[self._instance_name].user_allowlist
+                and msg.author.id not in self._config.input[self._instance_name].user_allowlist_ids):
+            log.info(
+                f"{self._instance_name} (Discord): "
+                f"Ignoring message from user {msg.author.id} (not in allowlist)")
+            return False
+        return True
+
     async def on_message(self, message: discord.Message) -> None:
         if message.author.id == self.user.id:
             return
-        if (self._config.input[self._instance_name].chat_filter and
-                message.channel.id not in self._config.input[self._instance_name].chat_ids):
+        if not self._check_message(message):
             return
         text = self._format_header(message)
         text += message.content
