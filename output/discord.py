@@ -46,7 +46,6 @@ class DiscordHandler(Handler):
         else:
             log.error(f"[{self.get_instance_name()}] ERROR: {resp} ({text})")
 
-
     def _retry_without_files(self, text: str) -> None:
         webhook = DiscordWebhook(
             url=self._config.output[self.get_instance_name()].webhook_link, rate_limit_retry=True,
