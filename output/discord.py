@@ -40,19 +40,10 @@ class DiscordHandler(Handler):
         if resp.status_code in (200, 204):
             log.message(self.get_instance_name(), text, files)
         elif resp.status_code == 413:
+            # Retry sending without files
             text_ext = (
                 f"{text}\n`+ {len(files)} file(s) that couldn't be uploaded (too big to upload to Discord)`")
-            self._retry_without_files(text_ext)
-        else:
-            log.error(f"[{self.get_instance_name()}] ERROR: {resp} ({text})")
-
-    def _retry_without_files(self, text: str) -> None:
-        webhook = DiscordWebhook(
-            url=self._config.output[self.get_instance_name()].webhook_link, rate_limit_retry=True,
-            content=text, proxies=self._proxy)
-        resp = webhook.execute()
-        if resp.status_code in (200, 204):
-            log.message(self.get_instance_name(), text)
+            self.send_message(text_ext)
         else:
             log.error(f"[{self.get_instance_name()}] ERROR: {resp} ({text})")
 
