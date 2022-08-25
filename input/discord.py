@@ -51,7 +51,7 @@ class _DiscordClient(discord.Client):
                 return None
 
     def _format_backend_header(self, msg: discord.Message) -> str:
-        text = "[Discord] "
+        text = f"[{self._instance_name}] "
         if msg.channel.name:
             text += "#" + msg.channel.name + " "
         text += f"({msg.created_at.astimezone()})\n"

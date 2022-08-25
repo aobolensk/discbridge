@@ -38,7 +38,7 @@ class TelegramListener(Listener):
         return output_file
 
     def _format_backend_header(self, msg: telegram.Message) -> str:
-        text = "[Telegram] "
+        text = f"[{self.get_instance_name()}] "
         if msg.chat.title:
             text += msg.chat.title + " "
         if msg.chat.full_name:

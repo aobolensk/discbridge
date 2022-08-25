@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 class MatrixListener(Listener):
     def _format_header(self, room: MatrixRoom, event: RoomMessageText) -> str:
         result = (
-            f"[Matrix] {room.display_name} "
+            f"[{self.get_instance_name()}] {room.display_name} "
             f"({datetime.datetime.fromtimestamp(event.server_timestamp / 1000)})\n"
         )
         result += f"{event.sender}: "
