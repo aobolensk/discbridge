@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 class EmailListener(Listener):
     def _format_header(self, msg: email.message.Message) -> str:
-        result = f"[EMAIL] {msg['to']} ({msg['date']})\n"
+        result = f"[E-mail] {msg['to']} ({msg['date']})\n"
         result += f"{msg['from']} (subject: {msg['subject']}):\n"
         return result
 
