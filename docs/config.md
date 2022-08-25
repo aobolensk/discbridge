@@ -2,6 +2,7 @@
 
 Note: All input and output values are optional.
 If you do not need any backend just omit corresponding part of config.
+There is a [doc](docs/backend-instructions.md) about backend specific details.
 
 ```yaml
 input:
@@ -31,7 +32,6 @@ input:
     password: <user_password>
     room_id: <matrix_room_id>     # Looks like: !opaque_id:domain
     proxy: false                  # optional
-    # To get necessary data for matrix output see backend specific instructions
 output:
   discord:
     webhook_link: <link>
@@ -57,7 +57,6 @@ output:
     password: <user_password>
     room_id: <matrix_room_id>     # Looks like: !opaque_id:domain
     proxy: false                  # optional
-    # To get necessary data for matrix output see backend specific instructions
 ```
 
 It is possible to add multiple input and output configurations.
