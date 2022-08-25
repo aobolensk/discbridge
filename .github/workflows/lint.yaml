@@ -16,9 +16,3 @@ jobs:
         python -m pip install flake8
     - name: Run linter
       run: python -m flake8 --max-line-length 120 --show-source
-  docker-build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Build docker
-      run: docker build .
