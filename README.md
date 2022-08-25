@@ -2,6 +2,10 @@
 
 discbridge allows you to bridge your messages between [different messenger platforms](docs/support-table.md).
 
+## Requirements:
+
+- [Python](https://www.python.org/) 3.8-3.10
+
 ## How to run:
 ```console
 $ python3 -m pip install -r requirements.txt
