@@ -43,6 +43,10 @@ class MatrixInputConfig:
     credentials_json: str
     password: str
     room_id: str
+    user_blocklist: bool = False
+    user_blocklist_names: List[int] = field(default_factory=list)
+    user_allowlist: bool = False
+    user_allowlist_names: List[int] = field(default_factory=list)
     proxy: bool = False
 
 

@@ -31,6 +31,10 @@ input:
     credentials_json: <path_to_json>
     password: <user_password>
     room_id: <matrix_room_id>     # Looks like: !opaque_id:domain
+    user_blocklist: false         # optional
+    user_blocklist_names: []      # optional
+    user_allowlist: false         # optional
+    user_allowlist_names: []      # optional
     proxy: false                  # optional
 output:
   discord:

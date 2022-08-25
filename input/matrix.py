@@ -27,12 +27,31 @@ class MatrixListener(Listener):
         result += f"{event.sender}: "
         return result
 
+    def _check_message(self, event: RoomMessageText) -> bool:
+        if (self._config.input[self.get_instance_name()].user_blocklist
+                and event.sender in self._config.input[self.get_instance_name()].user_blocklist_names):
+            log.info(
+                f"{self.get_instance_name()} (Telegram): "
+                f"Ignoring message from user {event.sender} (in blocklist)")
+            return False
+        if (self._config.input[self.get_instance_name()].user_allowlist
+                and event.sender not in self._config.input[self.get_instance_name()].user_allowlist_names):
+            log.info(
+                f"{self.get_instance_name()} (Telegram): "
+                f"Ignoring message from user {event.sender} (not in allowlist)")
+            return False
+        return True
+
     async def _message_callback(self, room: MatrixRoom, event: RoomMessageText) -> None:
+        if not self._check_message(event):
+            return
         text = self._format_header(room, event)
         text += event.body
         self._core.send_message(text)
 
     async def _media_callback(self, room: MatrixRoom, event: RoomMessage) -> None:
+        if not self._check_message(event):
+            return
         text = self._format_header(room, event)
         mxc_link = urlparse(event.url)
         media_data = (
