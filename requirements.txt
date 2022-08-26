@@ -1,7 +1,7 @@
 Pillow==9.2.0                               # common
 PyYAML==6.0                                 # common
 cairosvg==2.5.2                             # common
-discord-webhook==0.16.3                     # discord output
+discord-webhook==0.17.0                     # discord output
 html2text==2020.1.16                        # email input
 lottie==0.6.11                              # telegram input
 matrix-nio[e2e]==0.19.0                     # matrix input/output
