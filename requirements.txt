@@ -5,7 +5,7 @@ discord-webhook==0.17.0                     # discord output
 html2text==2020.1.16                        # email input
 lottie==0.6.11                              # telegram input
 matrix-nio[e2e]==0.19.0                     # matrix input/output
-py-cord==2.0.1                              # discord input
+py-cord==2.1.1                              # discord input
 python-magic==0.4.27                        # common
 python-telegram-bot==13.13                  # telegram input/output
 requests==2.28.1                            # common
