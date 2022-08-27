@@ -5,6 +5,12 @@ discbridge allows you to bridge your messages between [different messenger platf
 ## Requirements:
 
 - [Python](https://www.python.org/) 3.8-3.10
+- [libolm](https://gitlab.matrix.org/matrix-org/olm)
+
+  Ubuntu/Debian:
+  ```
+  $ sudo apt install libolm-dev python3-olm
+  ```
 
 ## How to run:
 ```console
