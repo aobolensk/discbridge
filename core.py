@@ -37,10 +37,10 @@ class Core:
 
     def _read_config(self) -> None:
         if self._args.config:
-            with open(self._args.config) as f:
+            with open(self._args.config, encoding="utf-8") as f:
                 self._config = Config(yaml.load(f, yaml.CLoader))
         elif os.path.isfile("config.yaml"):
-            with open("config.yaml") as f:
+            with open("config.yaml", encoding="utf-8") as f:
                 self._config = Config(yaml.load(f, yaml.CLoader))
         else:
             log.error("No config file found!")
