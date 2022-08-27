@@ -22,6 +22,15 @@ Setup config.yaml file following the [tutorial](docs/config.md).
 You need to use credentials for your bots to run the bridge.
 Use Ctrl+C to stop.
 
+### Docker
+
+Alternatively you can use Docker to run discbridge.
+
+```bash
+$ docker build -t discbridge .
+$ docker run -it discbridge
+```
+
 ## FAQ
 
 Config setup: [Read](docs/config.md)<br>
