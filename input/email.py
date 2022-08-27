@@ -31,7 +31,7 @@ class EmailListener(Listener):
     def _check_email(self) -> None:
         conn = imaplib.IMAP4_SSL(self._config.input[self.get_instance_name()].imap_server)
         try:
-            retcode, capabilities = conn.login(
+            retcode, _ = conn.login(
                 self._config.input[self.get_instance_name()].email,
                 self._config.input[self.get_instance_name()].password)
         except Exception as e:
@@ -40,7 +40,8 @@ class EmailListener(Listener):
         conn.select()
         retcode, messages = conn.search(None, '(UNSEEN)')
         if retcode != 'OK':
-            pass
+            log.error(f"Email check failed: {retcode}")
+            return
         for num in messages[0].split():
             retcode, data = conn.fetch(num, '(RFC822)')
             if retcode != 'OK':
