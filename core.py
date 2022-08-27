@@ -37,9 +37,11 @@ class Core:
 
     def _read_config(self) -> None:
         if self._args.config:
-            self._config = Config(yaml.load(open(self._args.config), yaml.CLoader))
+            with open(self._args.config) as f:
+                self._config = Config(yaml.load(f, yaml.CLoader))
         elif os.path.isfile("config.yaml"):
-            self._config = Config(yaml.load(open("config.yaml"), yaml.CLoader))
+            with open("config.yaml") as f:
+                self._config = Config(yaml.load(f, yaml.CLoader))
         else:
             log.error("No config file found!")
             sys.exit(1)
