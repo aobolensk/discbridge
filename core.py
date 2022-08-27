@@ -85,6 +85,6 @@ class Core:
         for handler in self._handlers:
             handler.close()
 
-    def send_message(self, text: str, files: List[str] = list()) -> None:
+    def send_message(self, text: str, files: List[str] = []) -> None:
         for handler in self._handlers:
             handler.send_message(text, files)

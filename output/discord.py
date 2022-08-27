@@ -22,7 +22,7 @@ class DiscordHandler(Handler):
             "https": proxy_setting_https,
         }
 
-    def send_message(self, text: str, files: List[str] = list()) -> None:
+    def send_message(self, text: str, files: List[str] = []) -> None:
         text_chunks = list(split_by_chunks(text, 2000))
         for index, text_chunk in enumerate(text_chunks):
             if index + 1 != len(text_chunks):
@@ -30,7 +30,7 @@ class DiscordHandler(Handler):
             else:
                 self._send_message_chunk(text_chunk, files)
 
-    def _send_message_chunk(self, text: str, files: List[str] = list()) -> None:
+    def _send_message_chunk(self, text: str, files: List[str] = []) -> None:
         webhook = DiscordWebhook(
             url=self._config.output[self.get_instance_name()].webhook_link, rate_limit_retry=True,
             content=text, proxies=self._proxy)

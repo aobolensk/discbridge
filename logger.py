@@ -21,7 +21,7 @@ class Log:
         self.error = self._log.error
         self.warning = self._log.warning
 
-    def message(self, backend: str, text: str, files: List[str] = list()) -> None:
+    def message(self, backend: str, text: str, files: List[str] = []) -> None:
         self.info("[" + backend + "] Message:\n" + text + (
                 (f"(+ {len(files)} file(s): " + ', '.join(files) + ")") if files else ''))
 

@@ -101,7 +101,7 @@ class MatrixHandler(Handler):
     def _send_message(self, text: str, files: List[str]) -> None:
         self._loop.run_until_complete(self._send_message_impl(text, files))
 
-    def send_message(self, text: str, files: List[str] = list()) -> None:
+    def send_message(self, text: str, files: List[str] = []) -> None:
         threading.Thread(target=self._send_message, args=(text, files)).start()
         log.message(self.get_instance_name(), text, files)
 
