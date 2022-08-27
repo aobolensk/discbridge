@@ -16,8 +16,8 @@ from utils import tmp_dir
 
 class Core:
     def __init__(self, args) -> None:
-        self._listeners = list()
-        self._handlers = list()
+        self._listeners = []
+        self._handlers = []
         self._args = args
 
     def _stop_signal_handler(self, sig, frame):
