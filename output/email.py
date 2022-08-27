@@ -25,7 +25,7 @@ class EmailHandler(Handler):
             self._config.output[self.get_instance_name()].password)
         self._server.auth_plain()
 
-    def send_message(self, text: str, files: List[str] = []) -> None:
+    def send_message(self, text: str, files: List[str] = list()) -> None:
         msg = MIMEMultipart()
         msg["From"] = self._config.output[self.get_instance_name()].email
         msg["To"] = ', '.join(self._config.output[self.get_instance_name()].to_addrs)
