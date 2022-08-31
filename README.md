@@ -1,3 +1,7 @@
+[![CI Status](https://github.com/aobolensk/discbridge/workflows/Lint/badge.svg)](https://github.com/aobolensk/discbridge/actions/workflows/lint.yaml)
+[![CI Status](https://github.com/aobolensk/discbridge/workflows/Docker%20build/badge.svg)](https://github.com/aobolensk/discbridge/actions/workflows/build-image.yml)
+[![CI Status](https://github.com/aobolensk/discbridge/workflows/CodeQL/badge.svg)](https://github.com/aobolensk/discbridge/actions/workflows/codeql-analysis.yml)
+
 # discbridge
 
 discbridge allows you to bridge your messages between [different messenger platforms](docs/support-table.md).
