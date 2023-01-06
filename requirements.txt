@@ -1,4 +1,4 @@
-Pillow==9.3.0                               # common
+Pillow==9.4.0                               # common
 PyYAML==6.0                                 # common
 cairosvg==2.5.2                             # common
 discord-webhook==1.0.0                     # discord output
