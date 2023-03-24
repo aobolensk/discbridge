@@ -1,6 +1,6 @@
 Pillow==9.4.0                               # common
 PyYAML==6.0                                 # common
-cairosvg==2.6.0                             # common
+cairosvg==2.7.0                             # common
 discord-webhook==1.1.0                     # discord output
 html2text==2020.1.16                        # email input
 lottie==0.7.0                              # telegram input
