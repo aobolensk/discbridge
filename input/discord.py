@@ -81,8 +81,6 @@ class _DiscordClient(discord.Client):
         return True
 
     async def on_message(self, message: discord.Message) -> None:
-        if message.author.id == self.user.id:
-            return
         if not self._check_message(message):
             return
         text = self._format_header(message)
